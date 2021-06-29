@@ -22,7 +22,7 @@ for (const [key, value] of Object.entries(object)) {
           id={item}
           key={item}
           text={item}
-          color="green"
+          color="red"
           onClick={handleClick}
         />
       );
