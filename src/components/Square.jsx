@@ -6,10 +6,9 @@ const Square = ({ color, text, onClick }) => {
     <button
       className="square"
       key={text}
-      value={text}
       style={{ backgroundColor: color }}
       onClick={(event) => {
-        onClick(event.target.value);
+        onClick(event.target.innerHTML);
       }}
     >
       {text}
