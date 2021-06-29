@@ -1,0 +1,11 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.square {
+  position: flex;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  width: 3cm;
+}
