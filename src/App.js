@@ -5,6 +5,8 @@ import Footer from "./components/Footer";
 import About from "./components/About";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+//https://reactrouter.com/web/example/no-match
+
 export default function App() {
   return (
     <Router>
