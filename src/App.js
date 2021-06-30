@@ -8,15 +8,18 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 //https://reactrouter.com/web/example/no-match
 
+/* <AddPlayer />
+<Switch>
+  <Route exact path="/" component={Footer} />
+  <Route path="/about" component={About} />
+</Switch> */
+
 export default function App() {
   return (
     <Router>
-      <div className="App">
-        <AddPlayer />
-        <Switch>
-          <Route exact path="/" component={Footer} />
-          <Route path="/about" component={About} />
-        </Switch>
+      <div className="container">
+        <Route path="/about" component={About} />
+        <Footer />
       </div>
     </Router>
   );
