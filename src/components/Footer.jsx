@@ -1,14 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Footer = () => {
+  let location = useLocation();
   return (
     <>
-      <footer>
-        <p>Copyright &copy; {new Date().getFullYear()}</p>
-        <Link to="/About">About</Link>
-        {/* <a href="/About">About</a> */}
-      </footer>
+      {location.pathname === '/' && (
+        <footer>
+          <p>Copyright &copy; {new Date().getFullYear()}</p>
+          <Link to='/About'>About</Link>
+          {/* <a href="/About">About</a> */}
+        </footer>
+      )}
     </>
   );
 };

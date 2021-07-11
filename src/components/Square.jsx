@@ -1,5 +1,5 @@
-import React from "react";
-import Proptypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Square = ({ color, text, onClick }) => {
   return (
@@ -17,12 +17,12 @@ const Square = ({ color, text, onClick }) => {
 };
 
 Square.propTypes = {
-  value: Proptypes.string,
-  onClick: Proptypes.func
+  value: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 Square.defaultValues = {
-  value: "0"
+  value: '0',
 };
 
 export default Square;

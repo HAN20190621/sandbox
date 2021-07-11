@@ -15,7 +15,7 @@ for (const [key, value] of Object.entries(object)) {
 
   const squares = { 0: [0, 1, 2], 1: [3, 4, 5], 2: [6, 7, 8] };
 
-  function renderSquarex(k) {
+  function renderSquareX(k) {
     return squares[k].map((item, index) => {
       return (
         <Square
@@ -33,7 +33,7 @@ for (const [key, value] of Object.entries(object)) {
     return Object.keys(squares).map((item, idx) => {
       return (
         <div key={idx} className="board-row">
-          {renderSquarex(item)}
+          {renderSquareX(item)}
         </div>
       );
     });
