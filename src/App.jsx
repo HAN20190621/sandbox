@@ -30,9 +30,17 @@ useEffect(() => {
 
 const App = () => {
   const [coords, setCoords] = useState({});
+  const [resizing, setResizing] = useState(false);
+
   const appRef = useRef(null);
 
   const updateWindowCoords = () => {
+    let timeout;
+    clearTimeout(timeout);
+    setResizing(true);
+    timeout = setTimeout(() => {
+      setResizing(false);
+    }, 200);
     const rect = appRef.current.getBoundingClientRect();
     setCoords({
       left: rect.x + rect.width / 2, // add half the width of the button for centering
@@ -43,6 +51,7 @@ const App = () => {
   const updateCoords = debounce(updateWindowCoords, 100);
 
   useEffect(() => {
+    // event listener
     window.addEventListener("resize", updateCoords);
     return () => {
       window.removeEventListener("resize", updateCoords);
@@ -52,7 +61,7 @@ const App = () => {
   return (
     <Router>
       <div ref={appRef} className="container" style={{ ...styles.app, coords }}>
-        <Header title="tik-tak-toe" />
+        <Header title="tik-tak-toe" resizing={resizing} />
         <Switch>
           <Route path="/about" component={About} />
           <Route path="/players" component={Players} />
