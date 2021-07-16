@@ -31,9 +31,9 @@ useEffect(() => {
 const App = () => {
   const [coords, setCoords] = useState({});
   const [resizing, setResizing] = useState(false);
-
   const appRef = useRef(null);
 
+  //https://stackoverflow.com/questions/65402977/how-to-observe-when-window-resize-stop-in-react
   const updateWindowCoords = () => {
     let timeout;
     clearTimeout(timeout);
