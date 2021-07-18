@@ -18,7 +18,7 @@ body {
 } */
 
 .container {
-  max-width: 500px;
+  max-width: 600px;
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
@@ -26,6 +26,10 @@ body {
   padding: 30px;
   border-radius: 5px;
   background-color: lawngreen;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 
 .header {
@@ -48,6 +52,10 @@ body {
   margin: 5px;
   padding: 10px 20px;
   text-decoration: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 
 .btn:focus {
@@ -56,10 +64,10 @@ body {
 
 .btn:active {
   transform: scale(0.98);
-  -webkit-transform: ;
-  -moz-transform: ;
-  -ms-transform: ;
-  -o-transform: ;
+  -webkit-transform: scale(0.98);
+  -moz-transform: scale(0.98);
+  -ms-transform: scale(0.98);
+  -o-transform: scale(0.98);
 }
 
 .btn-selected {
@@ -82,6 +90,7 @@ footer {
 .players {
   display: inline-flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .player-name {
@@ -92,6 +101,10 @@ footer {
   flex-direction: row;
   font-size: 17px;
   padding: 5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
 }
 
 .player-name > span:first-child {

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Modal from "./Modal";
-import Player from "./Player";
-import EditPlayer from "./EditPlayer";
+import React, { useEffect, useState } from 'react';
+import Modal from './Modal';
+import Player from './Player';
+import EditPlayer from './EditPlayer';
 
 // players, handlePlayers
 export default function Players({ players, setPlayers }) {
@@ -15,11 +15,10 @@ export default function Players({ players, setPlayers }) {
   const [playerRef, setPlayerRef] = useState(null);
 
   useEffect(() => {
-    //console.log(`Players${players.length}`);
     if (init) return;
     setDirty([
       { rank: 1, isDirty: false },
-      { rank: 2, isDirty: false }
+      { rank: 2, isDirty: false },
     ]);
     setInit(true);
   }, [init, players]);
@@ -65,7 +64,7 @@ export default function Players({ players, setPlayers }) {
       //left: rect.x + rect.width / 2, // add half the width of the button for centering
       //top: rect.y + window.scrollY + 50, // add scrollY offset, as soon as getBountingClientRect takes on screen coords
       left: rect.left - 38,
-      top: rect.top + 12 + 50
+      top: rect.top + 12 + 50,
     });
   };
 
@@ -145,20 +144,20 @@ Players.defaultProps = {
   players: [
     {
       rank: 1,
-      name: "tik-tak-toe",
-      colour: "green",
-      xo: "x",
-      status: "",
-      score: 0
+      name: 'tik-tak-toe',
+      colour: 'green',
+      xo: 'x',
+      status: '',
+      score: 0,
     },
     {
       rank: 2,
-      name: "coco",
-      colour: "yellow",
-      xo: "o",
-      status: "",
-      score: 0
-    }
+      name: 'coco',
+      colour: 'yellow',
+      xo: 'o',
+      status: '',
+      score: 0,
+    },
   ],
-  setPlayers: () => {}
+  setPlayers: () => {},
 };

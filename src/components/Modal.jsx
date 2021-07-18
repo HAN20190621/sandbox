@@ -1,5 +1,4 @@
 import { createPortal } from 'react-dom';
-import usePortal from './usePortal';
 
 //https://codesandbox.io/s/zealous-waterfall-s76w2?file=/src/TooltipPopover.js
 //blog.logRocket.com/learn-react-portals-by-example/
@@ -8,7 +7,9 @@ import usePortal from './usePortal';
 //don't inherit font properties in CSS by default,
 //you have to specify it. http://jsfiddle.net/pEedc/184/
 
+//https://reactgo.com/react-modal-tutorial/
+
 export default function Modal({ show, id, children }) {
-  const target = usePortal(id);
-  return createPortal(show ? children : null, target);
+  //const target = usePortal(id);
+  return createPortal(show ? children : null, document.getElementById(id));
 }
