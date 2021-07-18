@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Modal from './Modal';
 import Player from './Player';
 import EditPlayer from './EditPlayer';
 
 // players, handlePlayers
-export default function Players({ players, setPlayers }) {
+export default function Players({ players, setPlayers, resizing }) {
   const [init, setInit] = useState(false);
   const [show, setShow] = useState(false);
   const [dirty, setDirty] = useState([]);
   const [currPlayer, setCurrPlayer] = useState(null);
   const [selTarget, setSelTarget] = useState(null);
-  //
   const [coords, setCoords] = useState({});
-  const [playerRef, setPlayerRef] = useState(null);
+  const divRef = useRef(null);
 
   useEffect(() => {
     if (init) return;
@@ -22,6 +21,11 @@ export default function Players({ players, setPlayers }) {
     ]);
     setInit(true);
   }, [init, players]);
+
+  useEffect(() => {
+    let rect1 = divRef.current.getBoundingClientRect();
+    setCoords({ top: rect1.bottom, left: rect1.lef });
+  }, [resizing]);
 
   function setIsDirty(rank, isDirty) {
     const all = [...dirty];
@@ -108,13 +112,13 @@ export default function Players({ players, setPlayers }) {
   }
 
   function handleUpdatePlayerCoords(newRef) {
-    setPlayerRef(newRef);
+    //setPlayerRef(newRef);
     updatePlayerCoords(newRef.current);
   }
 
   return (
     <>
-      <div className="players">
+      <div ref={divRef} className="players">
         {players.map((player, idx) => (
           <Player
             key={idx}
@@ -133,7 +137,6 @@ export default function Players({ players, setPlayers }) {
           showModal={handleShowModal}
           onChange={handleOnChange}
           coords={coords}
-          updatePlayerCoords={() => updatePlayerCoords(playerRef.current)}
         />
       </Modal>
     </>

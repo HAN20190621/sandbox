@@ -3,22 +3,10 @@ import Colours from './Colours';
 import debounce from 'lodash/debounce';
 import { FaTimes } from 'react-icons/fa';
 
-export default function EditPlayer({
-  player,
-  showModal,
-  onChange,
-  coords,
-  updatePlayerCoords,
-}) {
+export default function EditPlayer({ player, showModal, onChange, coords }) {
   const [item, setItem] = useState({ rank: 0, name: '', colour: '' });
   const [show, setShow] = useState(true);
   const [init, setInit] = useState(false);
-  const updateCoords = debounce(updatePlayerCoords, 100);
-
-  useEffect(() => {
-    window.addEventListener('resize', updateCoords);
-    return () => window.removeEventListener('resize', updateCoords);
-  }, [updateCoords]);
 
   // initialise
   useEffect(() => {

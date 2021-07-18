@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import About from "./components/About";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Players from "./components/Players";
-import debounce from "lodash/debounce";
-import "./styles.css";
+import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import About from './components/About';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import Players from './components/Players';
+import debounce from 'lodash/debounce';
+import './styles.css';
 
 //https://reactrouter.com/web/example/no-match
 /*
@@ -44,7 +44,7 @@ const App = () => {
     const rect = appRef.current.getBoundingClientRect();
     setCoords({
       left: rect.x + rect.width / 2, // add half the width of the button for centering
-      top: rect.y + window.scrollY + 50 // add scrollY offset, as soon as getBountingClientRect takes on screen coords
+      top: rect.y + window.scrollY + 50, // add scrollY offset, as soon as getBountingClientRect takes on screen coords
     });
   };
 
@@ -52,9 +52,9 @@ const App = () => {
 
   useEffect(() => {
     // event listener
-    window.addEventListener("resize", updateCoords);
+    window.addEventListener('resize', updateCoords);
     return () => {
-      window.removeEventListener("resize", updateCoords);
+      window.removeEventListener('resize', updateCoords);
     };
   }, [updateCoords]);
 
@@ -64,7 +64,10 @@ const App = () => {
         <Header title="tik-tak-toe" resizing={resizing} />
         <Switch>
           <Route path="/about" component={About} />
-          <Route path="/players" component={Players} />
+          <Route
+            path="/players"
+            render={(props) => <Players {...props} resizing={resizing} />}
+          />
         </Switch>
         <Footer />
       </div>
@@ -74,11 +77,24 @@ const App = () => {
 
 const styles = {
   app: {
-    position: "absolute",
-    margin: "20px 20px"
-  }
+    position: 'absolute',
+    margin: '20px 20px',
+  },
   //width: 200,
   //transform: "translate(-100px, -100%)"
 };
 
 export default App;
+
+/*
+https://ui.dev/react-router-v4-pass-props-to-components/
+<Route
+  path='/dashboard'
+  render={(props) => (
+    <Dashboard {...props} isAuthed={true} />
+  )}
+/>
+So to recap, if you need to pass a prop to a component being rendered by 
+React Router v4, instead of using Routes component prop, use its render prop. 
+With render, you’re in charge of  creating the element and can pass 
+the component any props you’d like.*/
