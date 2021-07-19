@@ -36,9 +36,9 @@ const Board = (props) => {
             <div key={`col${idx_}`}>
               <Square
                 key={idx_}
-                winStyle={jumpToInd ? normalStyle : setWinStyle(idx_)}
-                value={squares[idx_]}
                 idx={idx_}
+                selectedStyle={jumpToInd ? normalStyle : setWinStyle(idx_)}
+                text={squares[idx_]}
                 onClick={() => {
                   props.onClick(idx_);
                 }}

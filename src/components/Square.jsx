@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Square = ({ color, text, onClick }) => {
+const Square = ({ selectedStyle, text, onClick }) => {
   return (
     <button
       className="square"
       key={text}
-      style={{ ...styles.square, backgroundColor: color }}
+      // style={{ selectedStyle }}
       onClick={(event) => {
         onClick(event.target.innerHTML);
       }}
@@ -17,28 +17,28 @@ const Square = ({ color, text, onClick }) => {
 };
 
 Square.propTypes = {
-  color: PropTypes.string,
+  selectedStyle: PropTypes.object,
   text: PropTypes.string,
   onClick: PropTypes.func
 };
 
 Square.defaultProps = {
-  color: "green",
+  selectedStyle: {},
   text: "o",
   onClick: () => {}
 };
 
-const styles = {
-  square: {
-    backgroundColor: "#fff",
-    fontSize: "large",
-    fontWeight: "bold",
-    height: "34px",
-    width: "34px",
-    margin: "5px",
-    padding: "0",
-    textAlign: "center"
-  }
-};
+// const styles = {
+//   square: {
+//     backgroundColor: "#fff",
+//     fontSize: "large",
+//     fontWeight: "bold",
+//     height: "34px",
+//     width: "34px",
+//     margin: "5px",
+//     padding: "0",
+//     textAlign: "center"
+//   }
+// };
 
 export default Square;
