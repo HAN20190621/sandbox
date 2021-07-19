@@ -74,7 +74,7 @@ const Board = (props) => {
 
 Board.defaultProps = {
   currPlayer: { currentColour: "green" },
-  squares: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  squares: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
   winners: ["x", "o", "x"],
   selItems: [0, 1, 2, 3],
   jumpToInd: true

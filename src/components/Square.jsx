@@ -6,7 +6,7 @@ const Square = ({ selectedStyle, text, onClick }) => {
     <button
       className="square"
       key={text}
-      // style={{ selectedStyle }}
+      style={{ selectedStyle }}
       onClick={(event) => {
         onClick(event.target.innerHTML);
       }}

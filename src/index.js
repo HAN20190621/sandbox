@@ -4,12 +4,12 @@ import "./styles.css";
 
 //import App from "./App";
 
-import Square from "./components/Square";
+import Board from "./components/Board";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <React.StrictMode>
-    <Square />
+    <Board />
   </React.StrictMode>,
   rootElement
 );

@@ -173,21 +173,11 @@ footer {
 
 /* board game */
 
-.square {
-  /* background: #fff; */
-  background: green;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-  font: 14px "Century Gothic", Futura, sans-serif;
+.board {
+  width: fit-content;
+  border-style: solid;
+  border-width: 1px;
+  border-color: crimson;
 }
 
 .board-row:afer {
@@ -196,18 +186,42 @@ footer {
   display: table;
 }
 
+.square {
+  background: #fff;
+  float: left;
+  font-size: 24px;
+  line-height: 34px;
+  height: 34px;
+  margin: 10px;
+  padding: 0px;
+  text-align: center;
+  width: 34px;
+}
+
 .sh {
   height: 10px;
   width: 162px;
-  background-color: green;
+  background-color: red;
   border-width: 10px;
-  border-color: red;
+  border-color: blue;
 }
 
-.sv {
-  height: 10px;
-  width: 162px;
-  background-color: green;
+.sv0 {
+  height: 55px;
+  width: 10px;
+  position: absolute;
+  margin-left: 48.5px;
+  background-color: blue;
   border-width: 10px;
-  border-color: red;
+  border-color: blue;
+}
+
+.sv1 {
+  height: 55px;
+  width: 10px;
+  position: absolute;
+  margin-left: 48.5px;
+  background-color: blue;
+  border-width: 10px;
+  border-color: blue;
 }
