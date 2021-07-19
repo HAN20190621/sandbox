@@ -1,44 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
 
-const Square = ({ selectedStyle, text, onClick }) => {
-  return (
-    <button
-      className="square"
-      key={text}
-      style={{ selectedStyle }}
-      onClick={(event) => {
-        onClick(event.target.innerHTML);
-      }}
-    >
-      {text}
-    </button>
-  );
-};
+// https://react.school/ui/button
 
-Square.propTypes = {
-  selectedStyle: PropTypes.object,
-  text: PropTypes.string,
-  onClick: PropTypes.func
-};
+const Square = (props) => (
+  // const targetRef = useRef(null);
+  // useEffect(() => {
+  //   // if (props.idx === 4) {
+  //   //   props.setTarget(targetRef.current);
+  //   // }
+  // });
 
-Square.defaultProps = {
-  selectedStyle: {},
-  text: "o",
-  onClick: () => {}
-};
-
-// const styles = {
-//   square: {
-//     backgroundColor: "#fff",
-//     fontSize: "large",
-//     fontWeight: "bold",
-//     height: "34px",
-//     width: "34px",
-//     margin: "5px",
-//     padding: "0",
-//     textAlign: "center"
-//   }
-// };
-
+  <button
+    // ref={targetRef}
+    className="square"
+    style={props.winStyle}
+    key={`sq${props.idx}`}
+    value={props.value}
+    onClick={props.onClick}
+  >
+    {props.value}
+  </button>
+);
 export default Square;
