@@ -4,12 +4,12 @@ import "./styles.css";
 
 //import App from "./App";
 
-import Board from "./components/Board";
+import Game from "./components/Game";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <React.StrictMode>
-    <Board />
+    <Game />
   </React.StrictMode>,
   rootElement
 );

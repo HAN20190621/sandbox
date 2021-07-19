@@ -1,24 +1,29 @@
-import React from 'react';
-
+import React from "react";
+import PropTypes from "prop-types";
 // https://react.school/ui/button
 
-const Square = (props) => (
-  // const targetRef = useRef(null);
-  // useEffect(() => {
-  //   // if (props.idx === 4) {
-  //   //   props.setTarget(targetRef.current);
-  //   // }
-  // });
-
+const Square = ({ idx, value, style, onClick }) => (
   <button
-    // ref={targetRef}
     className="square"
-    style={props.winStyle}
-    key={`sq${props.idx}`}
-    value={props.value}
-    onClick={props.onClick}
-  >
-    {props.value}
-  </button>
+    style={style}
+    value={value}
+    key={`sq${idx}`}
+    onClick={onClick}
+  />
 );
+
+Square.propTypes = {
+  idx: PropTypes.number,
+  style: PropTypes.object,
+  value: PropTypes.string,
+  onClick: PropTypes.func
+};
+
+Square.defaultProps = {
+  idx: 0,
+  style: { color: "green" },
+  value: "x",
+  onClick: () => {}
+};
+
 export default Square;

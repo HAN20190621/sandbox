@@ -1,19 +1,20 @@
-import React from 'react';
-import Square from './Square';
+import React from "react";
+import Square from "./Square";
 
 //  https://www.pluralsight.com/guides/applying-classes-conditionally-react
-const Board = (props) => {
-  const { squares } = props;
-  const { winners } = props;
-  const { selItems } = props;
-  const { stepNumber } = props;
-  const { currPlayer } = props;
-  const { jumpToInd } = props;
-
-  const winStyle = { color: currPlayer.colour, fontWeight: 'bold' };
+const Board = ({
+  squares,
+  winners,
+  selItems,
+  stepNumber,
+  currPlayer,
+  jumpToInd,
+  onClick
+}) => {
+  const winStyle = { color: currPlayer.colour, fontWeight: "bold" };
   const normalStyle = {
-    color: 'black',
-    fontWeight: 'normal',
+    color: "black",
+    fontWeight: "normal"
   }; // , color:'black'
 
   function setWinStyle(index) {
@@ -40,7 +41,7 @@ const Board = (props) => {
                 value={squares[idx_]}
                 idx={idx_}
                 onClick={() => {
-                  props.onClick(idx_);
+                  onClick(idx_);
                 }}
                 // setTarget={handleTarget}
               />
@@ -73,11 +74,12 @@ const Board = (props) => {
 };
 
 Board.defaultProps = {
-  currPlayer: { colour: 'green' },
+  currPlayer: { colour: "green" },
   squares: Array(9).fill(null),
-  winners: ['x'],
+  winners: ["x"],
   selItems: [0, 12, 3, 4],
   jumpToInd: true,
+  onClick: () => {}
 };
 
 export default Board;
