@@ -42,7 +42,6 @@ body {
 
 .btn {
   border: none;
-  outline: none !important;
   font-size: 17px;
   font-family: inherit;
   margin: 5px;
@@ -55,13 +54,12 @@ body {
   text-decoration: none;
 }
 
-/*
 .btn:focus {
   outline: none;
   box-shadow: none;
-} */
+}
 
-/* .btn:active {
+.btn:active {
   box-align: none;
   transform: scale(0.98);
   -webkit-transform: scale(0.98);
@@ -78,9 +76,8 @@ body {
 .btn-block {
   display: block;
   width: 100%;
-} */
-
-footer {
+}
+*/ footer {
   margin-top: 30px;
   text-align: center;
 }
