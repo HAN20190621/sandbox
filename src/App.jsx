@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Players from "./components/Players";
 import Board from "./components/Board";
+import Game from "./components/Game";
 import debounce from "lodash/debounce";
 import "./styles.css";
 
@@ -61,7 +62,7 @@ const App = () => {
   }, [updateCoords]);
 
   function handleStart(started) {
-    console.log("did i get here=" + started);
+    //console.log("did i get here=" + started);
     setStarted(started);
   }
 
@@ -81,6 +82,10 @@ const App = () => {
             render={(props) => <Players {...props} resizing={resizing} />}
           />
           <Route path="/board" component={Board} />
+          <Route
+            path="/game"
+            render={(props) => <Game {...props} started={started} />}
+          />
         </Switch>
         <Footer />
       </div>

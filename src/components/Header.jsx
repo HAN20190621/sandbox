@@ -24,13 +24,13 @@ const Header = ({ title, resizing, started, handleStart }) => {
       <h1 ref={h1Ref}>{title}</h1>
       <div ref={divRef} style={style}>
         {started && (
-          <Link to="./Board">
+          <Link to="./Game">
             <Button text={"Restart"} colour="green" />
           </Link>
         )}
 
         {(!started || location.pathname === "/Players") && (
-          <Link to="./Board">
+          <Link to="./Game">
             <Button
               text="Start"
               colour="green"

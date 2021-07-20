@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
 import Players from "./Players";
 import Board from "./Board";
@@ -40,6 +40,7 @@ function Game() {
   const [jumpToInd, setJumpToInd] = useState(false);
   const [lineStyle, setLineStyle] = useState({});
   const [target, setTarget] = useState(null);
+  const boardRef = useRef(null);
 
   const initialisePlayers = () => {
     const players = [
@@ -76,7 +77,7 @@ function Game() {
     return ["X", "O"][idx];
   }
 
-  // useCallback REF
+  // winning line - useCallback REF
   const handleLineStyleRef = useCallback((boardRef) => {
     setTimeout(() => {
       setTarget(boardRef.getBoundingClientRect());
@@ -428,7 +429,7 @@ function Game() {
     setSortAsc(sortOrder.toUpperCase() === "ASC");
   }
 
-  function handleStartGame() {
+  useEffect(() => {
     // has the game started - then this must be request to restart
     if (started) {
       setHistory({
@@ -447,14 +448,16 @@ function Game() {
       setWinners({});
       setSortAsc(true);
     }
-
     const index = Math.floor(Math.random() * 2);
     const first = players[index].xo;
     setFirstPlayer(first);
     // initialise current newPlayer
     setCurrPlayer(players[index]);
     setStarted(true);
-  }
+  }, [started]);
+
+  // function handleStartGame() {
+  // }
 
   function getScore() {
     let temp = "";
@@ -470,24 +473,13 @@ function Game() {
 
   return (
     <div className="game">
-      <div className="game-board">
-        <Players players={players} setPlayers={handleSetPlayers} />
-        {(() =>
-          players.filter((player) => player.name !== "").length === 2 ? (
-            <ToggleButton
-              toggle={handleStartGame}
-              labels={started ? ["Restart"] : ["Start"]}
-              changeOpacity={false}
-            />
-          ) : null)()}
-      </div>
       {started && (
         <>
           <div>{gameStatus}</div>
           <div>({getScore()})</div>
           <div>stepNumber = {stepNumber}</div>
           <div ref={handleLineStyleRef} className="board">
-            <Board
+            <Board ref={boardRef}
               squares={history.history[stepNumber].squares}
               winners={winners.winners ? winners.winners : []}
               selItems={selItems}
