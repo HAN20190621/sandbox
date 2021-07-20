@@ -29,8 +29,8 @@ const Header = ({ title, resizing, started, handleStart }) => {
           </Link>
         )}
 
-        {!started && location.pathname === "/Players" && (
-          <Link to="./">
+        {(!started || location.pathname === "/Players") && (
+          <Link to="./Board">
             <Button
               text="Start"
               colour="green"
