@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import About from './components/About';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Players from './components/Players';
-import debounce from 'lodash/debounce';
-import './styles.css';
+import React, { useState, useEffect, useRef } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import About from "./components/About";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Players from "./components/Players";
+import Board from "./components/Board";
+import debounce from "lodash/debounce";
+import "./styles.css";
 
 //https://reactrouter.com/web/example/no-match
 /*
@@ -27,13 +28,14 @@ useEffect(() => {
     };
 }, []);
 */
-
+//https://stackoverflow.com/questions/65402977/how-to-observe-when-window-resize-stop-in-react
 const App = () => {
-  const [coords, setCoords] = useState({});
-  const [resizing, setResizing] = useState(false);
+  const [resizing, setResizing] = useState(false); // boolean to indicate window is resizing
+  const [coords, setCoords] = useState({}); // window coordinates
   const appRef = useRef(null);
+  // start the game - flags
+  const [started, setStarted] = useState(false);
 
-  //https://stackoverflow.com/questions/65402977/how-to-observe-when-window-resize-stop-in-react
   const updateWindowCoords = () => {
     let timeout;
     clearTimeout(timeout);
@@ -44,7 +46,7 @@ const App = () => {
     const rect = appRef.current.getBoundingClientRect();
     setCoords({
       left: rect.x + rect.width / 2, // add half the width of the button for centering
-      top: rect.y + window.scrollY + 50, // add scrollY offset, as soon as getBountingClientRect takes on screen coords
+      top: rect.y + window.scrollY + 50 // add scrollY offset, as soon as getBountingClientRect takes on screen coords
     });
   };
 
@@ -52,22 +54,33 @@ const App = () => {
 
   useEffect(() => {
     // event listener
-    window.addEventListener('resize', updateCoords);
+    window.addEventListener("resize", updateCoords);
     return () => {
-      window.removeEventListener('resize', updateCoords);
+      window.removeEventListener("resize", updateCoords);
     };
   }, [updateCoords]);
+
+  function handleStart(started) {
+    console.log("did i get here=" + started);
+    setStarted(started);
+  }
 
   return (
     <Router>
       <div ref={appRef} className="container" style={{ ...styles.app, coords }}>
-        <Header title="tik-tak-toe" resizing={resizing} />
+        <Header
+          title="tik-tak-toe"
+          resizing={resizing}
+          started={started}
+          handleStart={handleStart}
+        />
         <Switch>
           <Route path="/about" component={About} />
           <Route
             path="/players"
             render={(props) => <Players {...props} resizing={resizing} />}
           />
+          <Route path="/board" component={Board} />
         </Switch>
         <Footer />
       </div>
@@ -77,9 +90,9 @@ const App = () => {
 
 const styles = {
   app: {
-    position: 'absolute',
-    margin: '20px 20px',
-  },
+    position: "absolute",
+    margin: "20px 20px"
+  }
   //width: 200,
   //transform: "translate(-100px, -100%)"
 };

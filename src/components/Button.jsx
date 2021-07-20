@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Button = ({ text, colour, onClick, className }) => {
   return (
@@ -15,10 +15,10 @@ const Button = ({ text, colour, onClick, className }) => {
 };
 
 Button.defaultProps = {
-  text: '',
-  color: 'green',
+  text: "",
+  color: "green",
   onClick: () => {},
-  className: 'btn',
+  className: "btn"
 };
 
 export default Button;
