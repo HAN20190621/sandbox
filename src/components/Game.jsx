@@ -3,20 +3,6 @@ import { useCallback, useEffect, useState, useRef, useReducer } from "react";
 import Board from "./Board";
 import ToggleButton from "./ToggleButton";
 
-// https://dev.to/danielleye/react-class-component-vs-function-component-with-hooks-13dg
-// import styled from "styled-components";
-// https://stackoverflow.com/questions/60503263/react-hooks-how-to-target-an-element-child-with-useref-with-a-variable-decla
-// //https://flaviocopes.com/react-hook-usecallback/
-
-// https://stackblitz.com/edit/react-r9opxy
-// const usePrevious = (value) => {
-//   const ref = useRef();
-//   useEffect(() => {
-//     ref.current = value;
-//   });
-//   return ref.current;
-// };
-
 const initialisePlayers = () => {
   const players = [
     {
@@ -45,7 +31,7 @@ const initialisePlayers = () => {
 
 // who starts first
 // 1 - X  2 - O
-const firstPlayer = () => {
+const initialiseFirstPlayer = () => {
   const idx = Math.floor(Math.random() * 2);
   return ["X", "O"][idx];
 };
@@ -57,45 +43,46 @@ const initialiseWinners = () => {
 const initialiseGame = {
   players: initialisePlayers(),
   currentPlayer: "",
-  firstPlayer: firstPlayer(),
+  firstPlayer: initialiseFirstPlayer(),
   winners: initialiseWinners(),
   status: ""
 };
 
 // game reducer
 const gameReducer = (state, action) => {
-  let winners, score, xo;
   switch (action.type) {
     case "update winners":
-      ({ xo, winners, score } = action.payload);
-      const newPlayers = [...state.players];
-      const tempIdx = ((xo) =>
-        newPlayers.findIndex((player) => player.xo === xo))(xo);
-      const newPlayer = newPlayers[tempIdx];
-      newPlayer.score += 1;
-      newPlayers[tempIdx] = newPlayer;
-      return {
-        ...state,
-        players: newPlayers,
-        winners: {
-          xo: xo,
-          winners: winners,
-          score: score
-        }
+      return () => {
+        let { xo, winners, score } = action.payload;
+        const players = [...state.players];
+        const tempIdx = ((xo) =>
+          players.findIndex((player) => player.xo === xo))(xo);
+        const player = players[tempIdx];
+        player.score += 1;
+        players[tempIdx] = player;
+        return {
+          ...state,
+          players: players,
+          winners: {
+            xo: xo,
+            winners: winners,
+            score: score
+          }
+        };
       };
     case "reset winners":
       const { jumpToInd } = action.payload;
       ({ winners } = state); //({ winners }) = state;
       if (winners.score > 0) {
-        const newPlayers = [...state.players];
+        const players = [...state.players];
         const tempIdx = ((xo) =>
-          newPlayers.findIndex((player) => player.xo === xo))(winners.xo);
-        const newPlayer = newPlayers[tempIdx];
-        newPlayer.score += jumpToInd ? -1 : 1;
-        newPlayers[tempIdx] = newPlayer;
+          players.findIndex((player) => player.xo === xo))(winners.xo);
+        const player = players[tempIdx];
+        player.score += jumpToInd ? -1 : 1;
+        players[tempIdx] = player;
         return {
           ...state,
-          players: newPlayers,
+          players: players,
           winners: {
             xo: "",
             winners: [],
@@ -105,7 +92,7 @@ const gameReducer = (state, action) => {
       }
       break;
     case "update status":
-      let players, currentPlayer, firstPlayer, tempStatus;
+      let currentPlayer, firstPlayer, tempStatus;
       ({ players, currentPlayer, firstPlayer, winners } = state);
       ({ xo } = currentPlayer);
       const { currentGame, isNext } = action.payload;
@@ -131,6 +118,12 @@ const gameReducer = (state, action) => {
         }`;
       }
       return { ...state, status: tempStatus };
+    case "update current player":
+      const tempIdx = ((xo) => players.findIndex((player) => player.xo === xo))(
+        squares[item]
+      );
+      setCurrPlayer(players[tempIdx]);
+
     default:
     //do nothing;
   }
@@ -363,10 +356,10 @@ export default function Game() {
     const squares = curr.squares.slice(); // copy
     //
     squares[item] = isNext
-      ? firstPlayer === "X"
+      ? game.firstPlayer === "X"
         ? "X"
         : "O"
-      : firstPlayer === "X"
+      : game.firstPlayer === "X"
       ? "O"
       : "X";
 
@@ -379,19 +372,14 @@ export default function Game() {
     setStepNumber(stepNumber + 1);
     setIsNext(!isNext);
     // get index
+
     const tempIdx = ((xo) => players.findIndex((player) => player.xo === xo))(
       squares[item]
     );
     setCurrPlayer(players[tempIdx]);
+
     if (jumpToInd) setJumpToInd(false);
   }
-
-  // https://nikgrozev.com/2019/04/07/reacts-usecallback-and-usememo-hooks-by-example/
-  // const { xo } = currPlayer;
-  const getPlayer = useCallback((players, xo) => {
-    const xoId = players.findIndex((player) => player.xo === xo);
-    return players[xoId];
-  }, []);
 
   const doSetMoves = useCallback(() => {
     const newMoves = history.history.map((hist, move) => {
@@ -499,10 +487,6 @@ export default function Game() {
     return temp;
   }
 
-  function handleSetPlayers(newPlayers) {
-    setPlayers(newPlayers);
-  }
-
   return (
     <div className="game">
       {started && (
@@ -540,3 +524,18 @@ export default function Game() {
     </div>
   );
 }
+
+// https://nikgrozev.com/2019/04/07/reacts-usecallback-and-usememo-hooks-by-example/
+// https://dev.to/danielleye/react-class-component-vs-function-component-with-hooks-13dg
+// import styled from "styled-components";
+// https://stackoverflow.com/questions/60503263/react-hooks-how-to-target-an-element-child-with-useref-with-a-variable-decla
+// //https://flaviocopes.com/react-hook-usecallback/
+
+// https://stackblitz.com/edit/react-r9opxy
+// const usePrevious = (value) => {
+//   const ref = useRef();
+//   useEffect(() => {
+//     ref.current = value;
+//   });
+//   return ref.current;
+// };
