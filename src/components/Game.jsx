@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState, useRef, useReducer } from "react";
+import { useCallback, useEffect, useState, useRef, useReducer } from 'react';
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
-import Board from "./Board";
-import ToggleButton from "./ToggleButton";
+import Board from './Board';
+import ToggleButton from './ToggleButton';
 
 // https://dev.to/danielleye/react-class-component-vs-function-component-with-hooks-13dg
 // import styled from "styled-components";
@@ -21,25 +21,25 @@ const initialisePlayers = () => {
   const players = [
     {
       rank: 1,
-      name: "",
-      colour: "",
-      xo: "",
-      status: "",
-      score: 0
+      name: '',
+      colour: '',
+      xo: '',
+      status: '',
+      score: 0,
     },
     {
       rank: 2,
-      name: "",
-      colour: "",
-      xo: "",
-      status: "",
-      score: 0
-    }
+      name: '',
+      colour: '',
+      xo: '',
+      status: '',
+      score: 0,
+    },
   ];
   const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
-  const xo = ["X", "O"][xoId];
+  const xo = ['X', 'O'][xoId];
   players[xoId].xo = xo;
-  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
+  players[xoId === 0 ? 1 : 0].xo = xo === 'X' ? 'O' : 'X';
   return players;
 };
 
@@ -47,24 +47,40 @@ const initialisePlayers = () => {
 // 1 - X  2 - O
 const firstPlayer = () => {
   const idx = Math.floor(Math.random() * 2);
-  return ["X", "O"][idx];
+  return ['X', 'O'][idx];
 };
 
 const initialiseWinners = () => {
-  return { xo: "", winners: [], score: 1 };
+  return { xo: '', winners: [], score: 1 };
 };
 
 const initialiseGame = {
   players: initialisePlayers(),
-  currentPlayer: "",
+  currentPlayer: '',
   firstPlayer: firstPlayer(),
-  winners: initialiseWinners()
+  winners: initialiseWinners(),
 };
 
+// game reducer
 const gameReducer = (state, action) => {
   switch (action.type) {
-    case "UPDATE_WINNER":
-      return { ...state };
+    case 'update winners':
+      const { xo, winners, score } = action.payload;
+      const newPlayers = [...state.players];
+      const tempIdx = ((xo) =>
+        newPlayers.findIndex((player) => player.xo === xo))(xo);
+      const newPlayer = newPlayers[tempIdx];
+      newPlayer.score += 1;
+      newPlayers[tempIdx] = newPlayer;
+      return {
+        ...state,
+        players: newPlayers,
+        winners: {
+          xo: xo,
+          winners: winners,
+          score: score,
+        },
+      };
     default:
     //do nothing;
   }
@@ -74,19 +90,18 @@ export default function Game() {
   const [history, setHistory] = useState({
     history: [
       {
-        squares: Array(9).fill(null)
-      }
-    ]
+        squares: Array(9).fill(null),
+      },
+    ],
   });
 
   //https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
   const [game, dispatch] = useReducer(gameReducer, initialiseGame);
-
   const [selItems, setSelItems] = useState([]);
   const [stepNumber, setStepNumber] = useState(0);
   const [isNext, setIsNext] = useState(true); // next player
   const [moves, setMoves] = useState([]);
-  const [gameStatus, setGameStatus] = useState("");
+  const [gameStatus, setGameStatus] = useState('');
   const [sortAsc, setSortAsc] = useState(true);
   const [started, setStarted] = useState(false);
   const [jumpToInd, setJumpToInd] = useState(false);
@@ -112,17 +127,17 @@ export default function Game() {
       horizontal: [
         [0, 1, 2],
         [3, 4, 5],
-        [6, 7, 8]
+        [6, 7, 8],
       ],
       vertical: [
         [0, 3, 6],
         [1, 4, 7],
-        [2, 5, 8]
+        [2, 5, 8],
       ],
       diagonal: [
         [0, 4, 8],
-        [2, 4, 6]
-      ]
+        [2, 4, 6],
+      ],
     };
 
     if (target === null) return;
@@ -143,7 +158,7 @@ export default function Game() {
     // if index = 1 then do nothing
     // if index = 3 then adjust top +
     // rotate 45 degree
-    let typ = "";
+    let typ = '';
     let pos = 0;
     let same = false;
     const rect = target;
@@ -163,93 +178,93 @@ export default function Game() {
     }
     //
     switch (typ) {
-      case "horizontal":
+      case 'horizontal':
         switch (pos) {
           case 0:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top + rect.height * 0.16,
-              width: rect.width
+              width: rect.width,
             });
             break;
           case 1:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top + rect.height * 0.5,
-              width: rect.width
+              width: rect.width,
             });
             break;
           case 2:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top + rect.height * 0.85,
-              width: rect.width
+              width: rect.width,
             });
             break;
           default:
           // do nothing
         }
         break;
-      case "vertical":
+      case 'vertical':
         switch (pos) {
           case 0:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left + rect.width * 0.17,
               top: rect.top,
-              width: "10px",
-              height: rect.height
+              width: '10px',
+              height: rect.height,
             });
             break;
           case 1:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left + rect.width * 0.5,
               top: rect.top,
-              width: "10px",
-              height: rect.height
+              width: '10px',
+              height: rect.height,
             });
             break;
           case 2:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left + rect.width * 0.825,
               top: rect.top,
-              width: "10px",
-              height: rect.height
+              width: '10px',
+              height: rect.height,
             });
             break;
           default:
           // do nothing
         }
         break;
-      case "diagonal":
+      case 'diagonal':
         switch (pos) {
           case 0:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top, // rect.top + rect.height / 2,
               width: Math.sqrt(
                 rect.width * rect.width + rect.height * rect.height
               ),
-              transform: "rotate(48deg)",
-              transformOrigin: "top left"
+              transform: 'rotate(48deg)',
+              transformOrigin: 'top left',
             });
             break;
           case 1:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               // left: rect.left + rect.width,
               top: rect.top + rect.height, // rect.top + rect.height / 2,
               width: Math.sqrt(
                 rect.width * rect.width + rect.height * rect.height
               ),
-              transform: "rotate(-48deg)",
-              transformOrigin: "top left"
+              transform: 'rotate(-48deg)',
+              transformOrigin: 'top left',
             });
             break;
           default:
@@ -275,7 +290,7 @@ export default function Game() {
       [2, 4, 6],
       [2, 5, 8],
       [3, 4, 5],
-      [6, 7, 8]
+      [6, 7, 8],
     ];
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
@@ -285,16 +300,9 @@ export default function Game() {
         squares[a] === squares[c]
       ) {
         // get the last click item and calc the offset
-        const newWinners = { xo: squares[a], winners: [a, b, c], score: 1 };
-        setWinners(newWinners);
-        setPlayers((prevPlayers) => {
-          const newPlayers = [...prevPlayers];
-          const tempIdx = ((xo) =>
-            newPlayers.findIndex((player) => player.xo === xo))(newWinners.xo);
-          const newPlayer = newPlayers[tempIdx];
-          newPlayer.score += 1;
-          newPlayers[tempIdx] = newPlayer;
-          return newPlayers;
+        dispatch({
+          type: 'update winners',
+          payload: { xo: squares[a], winners: [a, b, c], score: 1 },
         });
       }
     }
@@ -306,16 +314,16 @@ export default function Game() {
     const squares = curr.squares.slice(); // copy
     //
     squares[item] = isNext
-      ? firstPlayer === "X"
-        ? "X"
-        : "O"
-      : firstPlayer === "X"
-      ? "O"
-      : "X";
+      ? firstPlayer === 'X'
+        ? 'X'
+        : 'O'
+      : firstPlayer === 'X'
+      ? 'O'
+      : 'X';
 
     setHistory((prev) => ({
       ...prev,
-      history: tempHistory.concat([{ squares }])
+      history: tempHistory.concat([{ squares }]),
     }));
 
     setSelItems(selItems.slice(0, stepNumber).concat(item));
@@ -339,15 +347,15 @@ export default function Game() {
   const doSetMoves = useCallback(() => {
     const newMoves = history.history.map((hist, move) => {
       const row = [0, 1, 2].includes(selItems[move - 1])
-        ? "0"
+        ? '0'
         : [3, 4, 5].includes(selItems[move - 1])
-        ? "1"
+        ? '1'
         : [6, 7, 8].includes(selItems[move - 1])
-        ? "2"
-        : "";
+        ? '2'
+        : '';
       const desc = move
         ? `Go to move ${move} (${selItems[move - 1] % 3}, ${row})`
-        : "Go to game start";
+        : 'Go to game start';
       return (
         <li key={move}>
           <button
@@ -370,7 +378,7 @@ export default function Game() {
       if (selItems.length !== stepNumber && winners.score > 0) {
         setWinners((prevWinners) => {
           const { score } = prevWinners;
-          return { ...prevWinners, score: score - 1, winners: [], xo: "" };
+          return { ...prevWinners, score: score - 1, winners: [], xo: '' };
         });
         setPlayers((prevPlayers) => {
           const newPlayers = [...prevPlayers];
@@ -393,24 +401,24 @@ export default function Game() {
     let { xo } = currPlayer;
     if (winners.winners && winners.winners.length > 0) {
       newPlayer = getPlayer(players, xo);
-      tempStatus = `Winner: ${newPlayer.xo}${newPlayer.name !== "" ? "-" : ""}${
+      tempStatus = `Winner: ${newPlayer.xo}${newPlayer.name !== '' ? '-' : ''}${
         newPlayer.name
       }`;
     } else if (curr.squares.filter((item, idx) => item == null).length === 0) {
-      tempStatus = "No winner - draw!";
+      tempStatus = 'No winner - draw!';
     } else {
       xo = isNext
-        ? firstPlayer === "X"
-          ? "X"
-          : "O"
-        : firstPlayer === "X"
-        ? "O"
-        : "X";
+        ? firstPlayer === 'X'
+          ? 'X'
+          : 'O'
+        : firstPlayer === 'X'
+        ? 'O'
+        : 'X';
       // const xos = players.map((player, index) => player.xo);
       // const idx = xos.indexOf(xox);
       // newPlayer = idx < 0 ? players[0] : players[idx];
       newPlayer = getPlayer(players, xo);
-      tempStatus = `Next player: ${xo}${newPlayer.name !== "" ? "-" : ""}${
+      tempStatus = `Next player: ${xo}${newPlayer.name !== '' ? '-' : ''}${
         newPlayer.name
       }`;
     }
@@ -423,7 +431,7 @@ export default function Game() {
     isNext,
     players,
     currPlayer,
-    getPlayer
+    getPlayer,
   ]);
 
   useEffect(() => {
@@ -443,7 +451,7 @@ export default function Game() {
 
   function handleSort(sortOrder) {
     console.log(`hello${sortOrder}`);
-    setSortAsc(sortOrder.toUpperCase() === "ASC");
+    setSortAsc(sortOrder.toUpperCase() === 'ASC');
   }
 
   useEffect(() => {
@@ -452,16 +460,16 @@ export default function Game() {
       setHistory({
         history: [
           {
-            squares: Array(9).fill(null)
-          }
-        ]
+            squares: Array(9).fill(null),
+          },
+        ],
       });
       setSelItems([]);
       setStepNumber(0);
       setFirstPlayer(getFirstPlayer());
       setIsNext(true);
       setMoves([]);
-      setGameStatus("");
+      setGameStatus('');
       setWinners({});
       setSortAsc(true);
     }
@@ -477,7 +485,7 @@ export default function Game() {
   // }
 
   function getScore() {
-    let temp = "";
+    let temp = '';
     players.forEach((item, index) => {
       temp += `${item.name}-${item.score.toString()} `;
     });
@@ -510,7 +518,7 @@ export default function Game() {
           <div className="game-info">
             <ToggleButton
               toggle={handleSort}
-              labels={["Desc", "Asc"]}
+              labels={['Desc', 'Asc']}
               changeOpacity={false}
             />
             <ol reversed={!sortAsc}>
