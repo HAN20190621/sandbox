@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef, useReducer } from "react";
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
 import Players from "./Players";
 import Board from "./Board";
@@ -18,8 +18,8 @@ import ToggleButton from "./ToggleButton";
 //   return ref.current;
 // };
 
-const initialisePlayers = {
-  players: [
+const initialisePlayers_ = () => {
+  const players = [
     {
       rank: 1,
       name: "",
@@ -36,10 +36,29 @@ const initialisePlayers = {
       status: "",
       score: 0
     }
-  ]
+  ];
+  const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
+  const xo = ["X", "O"][xoId];
+  players[xoId].xo = xo;
+  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
+  return players;
 };
 
-function Game() {
+// who starts first
+// 1 - X  2 - O
+const firstPlayer = () => {
+  const idx = Math.floor(Math.random() * 2);
+  return ["X", "O"][idx];
+};
+
+const initialisePlayers = {
+  players: initialisePlayers_(),
+  currentPlayer: "",
+  firstPlayer: firstPlayer(),
+  winners: {}
+};
+
+export default function Game() {
   const [history, setHistory] = useState({
     history: [
       {
@@ -48,55 +67,20 @@ function Game() {
     ]
   });
 
+  //https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
+  const[players, ]
+
   const [selItems, setSelItems] = useState([]);
   const [stepNumber, setStepNumber] = useState(0);
-  const [firstPlayer, setFirstPlayer] = useState(getFirstPlayer()); // first player
   const [isNext, setIsNext] = useState(true); // next player
   const [moves, setMoves] = useState([]);
   const [gameStatus, setGameStatus] = useState("");
-  const [winners, setWinners] = useState({}); // xo, selected items
   const [sortAsc, setSortAsc] = useState(true);
   const [started, setStarted] = useState(false);
-  const [currPlayer, setCurrPlayer] = useState({});
   const [jumpToInd, setJumpToInd] = useState(false);
   const [lineStyle, setLineStyle] = useState({});
   const [target, setTarget] = useState(null);
   const boardRef = useRef(null);
-
-  const initialisePlayers = () => {
-    const players = [
-      {
-        rank: 1,
-        name: "",
-        colour: "",
-        xo: "",
-        status: "",
-        score: 0
-      },
-      {
-        rank: 2,
-        name: "",
-        colour: "",
-        xo: "",
-        status: "",
-        score: 0
-      }
-    ];
-    const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
-    const xo = ["X", "O"][xoId];
-    players[xoId].xo = xo;
-    players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
-    return players;
-  };
-
-  const [players, setPlayers] = useState(initialisePlayers());
-
-  // who starts first
-  // 1 - X  2 - O
-  function getFirstPlayer() {
-    const idx = Math.floor(Math.random() * 2);
-    return ["X", "O"][idx];
-  }
 
   // winning line - useCallback REF
   const handleLineStyleRef = useCallback((boardRef) => {
@@ -530,4 +514,3 @@ function Game() {
   );
 }
 
-export default Game;
