@@ -18,6 +18,27 @@ import ToggleButton from "./ToggleButton";
 //   return ref.current;
 // };
 
+const initialisePlayers = {
+  players: [
+    {
+      rank: 1,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    },
+    {
+      rank: 2,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    }
+  ]
+};
+
 function Game() {
   const [history, setHistory] = useState({
     history: [
@@ -479,7 +500,8 @@ function Game() {
           <div>({getScore()})</div>
           <div>stepNumber = {stepNumber}</div>
           <div ref={handleLineStyleRef} className="board">
-            <Board ref={boardRef}
+            <Board
+              ref={boardRef}
               squares={history.history[stepNumber].squares}
               winners={winners.winners ? winners.winners : []}
               selItems={selItems}

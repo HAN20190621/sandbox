@@ -9,7 +9,9 @@ const Square = ({ idx, value, style, onClick }) => (
     value={value}
     key={`sq${idx}`}
     onClick={onClick}
-  />
+  >
+    {value}
+  </button>
 );
 
 Square.propTypes = {
