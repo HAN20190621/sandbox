@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState, useRef, useReducer } from "react";
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
-import Players from "./Players";
 import Board from "./Board";
 import ToggleButton from "./ToggleButton";
 
@@ -18,7 +17,7 @@ import ToggleButton from "./ToggleButton";
 //   return ref.current;
 // };
 
-const initialisePlayers_ = () => {
+const initialisePlayers = () => {
   const players = [
     {
       rank: 1,
@@ -51,11 +50,24 @@ const firstPlayer = () => {
   return ["X", "O"][idx];
 };
 
-const initialisePlayers = {
-  players: initialisePlayers_(),
+const initialiseWinners = () => {
+  return { xo: "", winners: [], score: 1 };
+};
+
+const initialiseGame = {
+  players: initialisePlayers(),
   currentPlayer: "",
   firstPlayer: firstPlayer(),
-  winners: {}
+  winners: initialiseWinners()
+};
+
+const gameReducer = (state, action) => {
+  switch (action.type) {
+    case "UPDATE_WINNER":
+      return { ...state };
+    default:
+    //do nothing;
+  }
 };
 
 export default function Game() {
@@ -68,7 +80,7 @@ export default function Game() {
   });
 
   //https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
-  const[players, ]
+  const [game, dispatch] = useReducer(gameReducer, initialiseGame);
 
   const [selItems, setSelItems] = useState([]);
   const [stepNumber, setStepNumber] = useState(0);
@@ -92,9 +104,9 @@ export default function Game() {
 
   // strike the winner symbols
   useEffect(() => {
-    if (!winners.winners) return;
-    if (winners.winners.length !== 3) return;
-    const temp = [...winners.winners];
+    if (!game.winners) return;
+    if (game.winners.length !== 3) return;
+    const temp = [...game.winners];
     temp.sort();
     const x = {
       horizontal: [
@@ -247,7 +259,7 @@ export default function Game() {
       default:
       // do nothing
     }
-  }, [winners, target]);
+  }, [game.winners, target]);
 
   // set winners
   useEffect(() => {
@@ -513,4 +525,3 @@ export default function Game() {
     </div>
   );
 }
-
