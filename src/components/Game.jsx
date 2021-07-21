@@ -64,7 +64,7 @@ const initialiseGame = {
 
 // game reducer
 const gameReducer = (state, action) => {
-  //let winners, score, currentPlayer;
+  let winners, score, xo;
   switch (action.type) {
     case "update winners":
       ({ xo, winners, score } = action.payload);
@@ -105,34 +105,32 @@ const gameReducer = (state, action) => {
       }
       break;
     case "update status":
-      let tempStatus;
-      ({players, currentPlayer, firstPlayer, winners } = state);
-      ({xo} = currentPlayer);
-      ({currentGame, isNext} = action.payload);
-      player = players[players.findIndex((player) => player.xo === xo)];
+      let players, currentPlayer, firstPlayer, tempStatus;
+      ({ players, currentPlayer, firstPlayer, winners } = state);
+      ({ xo } = currentPlayer);
+      const { currentGame, isNext } = action.payload;
+      let player = players[players.findIndex((player) => player.xo === xo)];
       if (winners.winners.length > 0) {
-          tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
-            player.name
-          }`;
-        } else if (currentGame.squares.filter((item) => item == null).length === 0) {
-          tempStatus = "No winner - draw!";
-        } else {
-          xo = isNext
-            ? firstPlayer === "X"
-              ? "X"
-              : "O"
-            : firstPlayer === "X"
-            ? "O"
-            : "X";
-          tempStatus = `Next player: ${xo}${player.name !== "" ? "-" : ""}${
-            player.name
-          }`;
-        }
-        return {
-          ...state,
-          status: tempStatus;
+        tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
+          player.name
+        }`;
+      } else if (
+        currentGame.squares.filter((item) => item == null).length === 0
+      ) {
+        tempStatus = "No winner - draw!";
+      } else {
+        xo = isNext
+          ? firstPlayer === "X"
+            ? "X"
+            : "O"
+          : firstPlayer === "X"
+          ? "O"
+          : "X";
+        tempStatus = `Next player: ${xo}${player.name !== "" ? "-" : ""}${
+          player.name
+        }`;
       }
-      break;
+      return { ...state, status: tempStatus };
     default:
     //do nothing;
   }
@@ -436,12 +434,12 @@ export default function Game() {
     }
   }, [jumpToInd, stepNumber, selItems]);
 
-  const doSetGameStatus = useCallback(() => {  
-    dispatch({type: 'update staus', 
-      payload:{currentGame:history.history[stepNumber]
-        , isNext: isNext} } );
-    }
-  , [history, stepNumber, isNext]);
+  const doSetGameStatus = useCallback(() => {
+    dispatch({
+      type: "update staus",
+      payload: { currentGame: history.history[stepNumber], isNext: isNext }
+    });
+  }, [history, stepNumber, isNext]);
 
   useEffect(() => {
     if (started) {
