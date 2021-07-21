@@ -81,6 +81,24 @@ const gameReducer = (state, action) => {
           score: score
         }
       };
+    case "reset winners":
+      const { jumpToInd } = action.payload;
+      if (state.winners.score > 0) {
+          setWinners((prevWinners) => {
+            const { score } = prevWinners;
+            return { ...prevWinners, score: score - 1, winners: [], xo: "" };
+          });
+          const newPlayers = [...state.players];         
+          const tempIdx = ((xo) =>
+              newPlayers.findIndex((player) => player.xo === xo))(winners.xo);
+          const newPlayer = newPlayers[tempIdx];
+          newPlayer.score += jumpToInd ? -1 : 1;
+            newPlayers[tempIdx] = newPlayer;
+            return newPlayers;
+          });
+        }
+      }
+      }
     default:
     //do nothing;
   }
@@ -372,39 +390,18 @@ export default function Game() {
     setMoves(newMoves);
   }, [history, selItems]);
 
-  //
+  //reset current winners
   useEffect(() => {
-    const { winners } = game;
-    if (winners.xo === undefined) return;
     if (jumpToInd) {
-      if (selItems.length !== stepNumber && winners.score > 0) {
+      if (selItems.length !== stepNumber) {
         // reset score
-        const { xo, score } = winners;
         dispatch({
           type: "reset winners",
-          payload: { xo: "", winners: [], score: score - 1 }
-        });
-
-        const { score } = winners;
-        dispatch({
-          type: "update winners",
-          payload: { xo: "", winners: [], score: score - 1 }
-        });
-
-        const { players } = game;
-
-        setPlayers((prevPlayers) => {
-          const newPlayers = [...prevPlayers];
-          const tempIdx = ((xo) =>
-            newPlayers.findIndex((player) => player.xo === xo))(winners.xo);
-          const newPlayer = newPlayers[tempIdx];
-          newPlayer.score += jumpToInd ? -1 : 1;
-          newPlayers[tempIdx] = newPlayer;
-          return newPlayers;
+          payload: { jumpToInd: jumpToInd }
         });
       }
     }
-  }, [winners, jumpToInd, stepNumber, selItems]);
+  }, [jumpToInd, stepNumber, selItems]);
 
   const doSetGameStatus = useCallback(() => {
     let tempStatus;
