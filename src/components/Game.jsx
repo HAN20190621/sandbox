@@ -50,7 +50,6 @@ const initialiseGame = {
 
 // game reducer
 const gameReducer = (state, action) => {
-  console.log(action.type);
   switch (action.type) {
     case "update winners":
       return (() => {
@@ -190,7 +189,6 @@ export default function Game() {
     const winners = game.winners;
     if (winners.winners === undefined) return;
     if (winners.winners.length !== 3) return;
-    console.log(winners.winners);
     const temp = [...winners.winners];
     temp.sort();
     const x = {
@@ -379,9 +377,12 @@ export default function Game() {
   }, [history, stepNumber]);
 
   function handleClick(item) {
-    const tempHistory = history.history.slice(0, stepNumber + 1);
-    const curr = tempHistory[tempHistory.length - 1];
-    const squares = curr.squares.slice(); // copy
+    //console.log(item);
+    console.log(stepNumber);
+    const copyHistory = history.history.slice(0, stepNumber + 1);
+    const current = copyHistory[copyHistory.length - 1];
+    console.log(current);
+    const squares = current.squares.slice(); // copy
     //
     squares[item] = isNext
       ? game.firstPlayer === "X"
@@ -393,10 +394,10 @@ export default function Game() {
 
     setHistory((prev) => ({
       ...prev,
-      history: tempHistory.concat([{ squares }])
+      history: copyHistory.concat([{ squares }])
     }));
     setSelItems(selItems.slice(0, stepNumber).concat(item));
-    setStepNumber(stepNumber + 1);
+    setStepNumber(copyHistory.length);
     setIsNext(!isNext);
     // get current player
     dispatch({

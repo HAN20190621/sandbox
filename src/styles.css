@@ -169,6 +169,10 @@ body {
 }
 
 /* board game */
+.game {
+  width: fit-content;
+  align-items: center;
+}
 
 .board-row::after {
   clear: both;
