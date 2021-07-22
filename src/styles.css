@@ -219,3 +219,9 @@ body {
   border-width: 10px;
   border-color: red;
 }
+
+.line {
+  width: 135px;
+  height: 10px;
+  background-color: rgba(89, 133, 91, 0.511);
+}

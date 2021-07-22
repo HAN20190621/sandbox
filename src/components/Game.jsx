@@ -26,7 +26,6 @@ const initialisePlayers = () => {
   const xo = ["X", "O"][xoId];
   players[xoId].xo = xo;
   players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
-  console.log(players);
   return players;
 };
 
@@ -51,8 +50,7 @@ const initialiseGame = {
 
 // game reducer
 const gameReducer = (state, action) => {
-  console.log("action=" + action.type);
-  console.log(state);
+  console.log(action.type);
   switch (action.type) {
     case "update winners":
       return (() => {
@@ -136,7 +134,6 @@ const gameReducer = (state, action) => {
         };
       })();
     case "request to restart":
-      console.log("didi ig");
       return (() => {
         return {
           ...state,
@@ -180,20 +177,21 @@ export default function Game() {
   const [jumpToInd, setJumpToInd] = useState(false);
   const [lineStyle, setLineStyle] = useState({});
   const [target, setTarget] = useState(null);
-  //const boardRef = useRef(null);
 
-  // winning line - useCallback REF
+  // strike - useCallback REF
   const handleLineStyleRef = useCallback((boardRef) => {
-    // setTimeout(() => {
-    //   setTarget(boardRef.getBoundingClientRect());
-    // }, 300);
+    setTimeout(() => {
+      setTarget(boardRef.getBoundingClientRect());
+    }, 300);
   }, []);
 
   // strike the winner symbols
   useEffect(() => {
-    if (!game.winners) return;
-    if (game.winners.length !== 3) return;
-    const temp = [...game.winners];
+    const winners = game.winners;
+    if (winners.winners === undefined) return;
+    if (winners.winners.length !== 3) return;
+    console.log(winners.winners);
+    const temp = [...winners.winners];
     temp.sort();
     const x = {
       horizontal: [

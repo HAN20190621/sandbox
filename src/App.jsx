@@ -84,7 +84,7 @@ const App = () => {
           <Route path="/board" component={Board} />
           <Route
             path="/game"
-            render={(props) => <Game {...props} started={false} />}
+            render={(props) => <Game {...props} started={started} />}
           />
         </Switch>
         <Footer />

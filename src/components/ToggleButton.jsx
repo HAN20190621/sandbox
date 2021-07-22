@@ -1,33 +1,38 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+const Button = styled.button`
+  background-color: black;
+  color: ${(props) => (props.sortAsc ? "white" : "grey")};
+  opacity: ${(props) => (props.sortAsc ? 1 : 0.7)};
+  font-size: 20px;
+  padding: 10px 60px;
+  border-radius: 5px;
+  margin: 10px 0px;
+  cursor: pointer;
+  // &:hover {
+  //   background-color: lightblue;
+  // }
+`;
+
 function ToggleButton(props) {
   const [sortAsc, setSortAsc] = useState(true);
 
-  const Button = styled.button`
-    background-color: black;
-    color: ${sortAsc ? "white" : "grey"};
-    opacity: ${sortAsc ? 1 : 0.7};
-    font-size: 20px;
-    padding: 10px 60px;
-    border-radius: 5px;
-    margin: 10px 0px;
-    cursor: pointer;
-    // &:hover {
-    //   background-color: lightblue;
-    // }
-  `;
-  // https://www.youtube.com/watch?v=17AwVXg5lHk
-  function ToggleButton() {
+  function toggleButton() {
     props.xsort(!sortAsc);
     setSortAsc(!sortAsc);
   }
 
   return (
     <div className="button-toggle">
-      <Button onClick={() => ToggleButton()}>{sortAsc ? "DESC" : "ASC"}</Button>
+      <Button sortAsc={sortAsc} onClick={() => toggleButton()}>
+        {sortAsc ? "DESC" : "ASC"}
+      </Button>
     </div>
   );
 }
 
 export default ToggleButton;
+
+// https://www.youtube.com/watch?v=17AwVXg5lHk
+//https://github.com/styled-components/styled-components/issues/3117

@@ -9,10 +9,8 @@ const Header = ({ title, resizing, started, handleStart }) => {
   const [style, setStyle] = useState({ marginLeft: "50px" });
 
   useEffect(() => {
-    console.log(resizing);
     let rect1 = h1Ref.current.getBoundingClientRect();
     let rect2 = divRef.current.getBoundingClientRect();
-    console.log(rect1.bottom + " " + rect2.top);
     setStyle({
       marginLeft:
         Math.round(rect1.bottom) === Math.round(rect2.top) ? "0px" : "50px"
