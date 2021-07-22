@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef, useReducer } from "react";
+import { useCallback, useEffect, useState, useReducer } from "react";
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
 import Board from "./Board";
 import ToggleButton from "./ToggleButton";
@@ -26,6 +26,7 @@ const initialisePlayers = () => {
   const xo = ["X", "O"][xoId];
   players[xoId].xo = xo;
   players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
+  console.log(players);
   return players;
 };
 
@@ -50,6 +51,8 @@ const initialiseGame = {
 
 // game reducer
 const gameReducer = (state, action) => {
+  console.log("action=" + action.type);
+  console.log(state);
   switch (action.type) {
     case "update winners":
       return (() => {
@@ -99,7 +102,7 @@ const gameReducer = (state, action) => {
         const { currentGame, isNext } = action.payload;
         let player = players[players.findIndex((player) => player.xo === xo)];
         let tempStatus;
-        if (winners.winners.length > 0) {
+        if (winners.winners && winners.winners.length > 0) {
           tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
             player.name
           }`;
@@ -133,6 +136,7 @@ const gameReducer = (state, action) => {
         };
       })();
     case "request to restart":
+      console.log("didi ig");
       return (() => {
         return {
           ...state,
@@ -166,7 +170,6 @@ export default function Game() {
     ]
   });
 
-  //https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
   const [game, dispatch] = useReducer(gameReducer, initialiseGame);
   const [selItems, setSelItems] = useState([]);
   const [stepNumber, setStepNumber] = useState(0);
@@ -177,14 +180,13 @@ export default function Game() {
   const [jumpToInd, setJumpToInd] = useState(false);
   const [lineStyle, setLineStyle] = useState({});
   const [target, setTarget] = useState(null);
-  const boardRef = useRef(null);
+  //const boardRef = useRef(null);
 
   // winning line - useCallback REF
   const handleLineStyleRef = useCallback((boardRef) => {
-    setTimeout(() => {
-      setTarget(boardRef.getBoundingClientRect());
-      // console.log(boardRef.className);
-    }, 300);
+    // setTimeout(() => {
+    //   setTarget(boardRef.getBoundingClientRect());
+    // }, 300);
   }, []);
 
   // strike the winner symbols
@@ -451,7 +453,7 @@ export default function Game() {
 
   const doSetGameStatus = useCallback(() => {
     dispatch({
-      type: "update staus",
+      type: "update status",
       payload: {
         currentGame: history.history[stepNumber],
         isNext: isNext
@@ -534,7 +536,6 @@ export default function Game() {
           <div>stepNumber = {stepNumber}</div>
           <div ref={handleLineStyleRef} className="board">
             <Board
-              ref={boardRef}
               squares={history.history[stepNumber].squares}
               winners={getWinners() ? getWinners() : []}
               selItems={selItems}
@@ -563,6 +564,7 @@ export default function Game() {
   );
 }
 
+//https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
 // https://nikgrozev.com/2019/04/07/reacts-usecallback-and-usememo-hooks-by-example/
 // https://dev.to/danielleye/react-class-component-vs-function-component-with-hooks-13dg
 // import styled from "styled-components";
