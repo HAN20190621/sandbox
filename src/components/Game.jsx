@@ -52,7 +52,7 @@ const initialiseGame = {
 const gameReducer = (state, action) => {
   switch (action.type) {
     case "update winners":
-      return () => {
+      return (() => {
         let { xo, winners, score } = action.payload;
         const players = [...state.players];
         const tempIdx = ((xo) =>
@@ -69,61 +69,89 @@ const gameReducer = (state, action) => {
             score: score
           }
         };
-      };
+      })();
     case "reset winners":
-      const { jumpToInd } = action.payload;
-      ({ winners } = state); //({ winners }) = state;
-      if (winners.score > 0) {
-        const players = [...state.players];
+      return (() => {
+        const { jumpToInd } = action.payload;
+        const { winners } = state; //({ winners }) = state;
+        if (winners.score > 0) {
+          const players = [...state.players];
+          const tempIdx = ((xo) =>
+            players.findIndex((player) => player.xo === xo))(winners.xo);
+          const player = players[tempIdx];
+          player.score += jumpToInd ? -1 : 1;
+          players[tempIdx] = player;
+          return {
+            ...state,
+            players: players,
+            winners: {
+              xo: "",
+              winners: [],
+              score: winners.score - 1
+            }
+          };
+        }
+      })();
+    case "update status":
+      return (() => {
+        const { players, currentPlayer, firstPlayer, winners } = state;
+        let { xo } = currentPlayer;
+        const { currentGame, isNext } = action.payload;
+        let player = players[players.findIndex((player) => player.xo === xo)];
+        let tempStatus;
+        if (winners.winners.length > 0) {
+          tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
+            player.name
+          }`;
+        } else if (
+          currentGame.squares.filter((item) => item == null).length === 0
+        ) {
+          tempStatus = "No winner - draw!";
+        } else {
+          xo = isNext
+            ? firstPlayer === "X"
+              ? "X"
+              : "O"
+            : firstPlayer === "X"
+            ? "O"
+            : "X";
+          tempStatus = `Next player: ${xo}${player.name !== "" ? "-" : ""}${
+            player.name
+          }`;
+        }
+        return { ...state, status: tempStatus };
+      })();
+    case "update current player":
+      return (() => {
+        const { xo } = action.payload;
+        const { players } = state;
         const tempIdx = ((xo) =>
-          players.findIndex((player) => player.xo === xo))(winners.xo);
-        const player = players[tempIdx];
-        player.score += jumpToInd ? -1 : 1;
-        players[tempIdx] = player;
+          players.findIndex((player) => player.xo === xo))(xo);
         return {
           ...state,
-          players: players,
-          winners: {
-            xo: "",
-            winners: [],
-            score: winners.score - 1
-          }
+          currentPlayer: players[tempIdx]
         };
-      }
-      break;
-    case "update status":
-      let currentPlayer, firstPlayer, tempStatus;
-      ({ players, currentPlayer, firstPlayer, winners } = state);
-      ({ xo } = currentPlayer);
-      const { currentGame, isNext } = action.payload;
-      let player = players[players.findIndex((player) => player.xo === xo)];
-      if (winners.winners.length > 0) {
-        tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
-          player.name
-        }`;
-      } else if (
-        currentGame.squares.filter((item) => item == null).length === 0
-      ) {
-        tempStatus = "No winner - draw!";
-      } else {
-        xo = isNext
-          ? firstPlayer === "X"
-            ? "X"
-            : "O"
-          : firstPlayer === "X"
-          ? "O"
-          : "X";
-        tempStatus = `Next player: ${xo}${player.name !== "" ? "-" : ""}${
-          player.name
-        }`;
-      }
-      return { ...state, status: tempStatus };
-    case "update current player":
-      const tempIdx = ((xo) => players.findIndex((player) => player.xo === xo))(
-        squares[item]
-      );
-      setCurrPlayer(players[tempIdx]);
-
+      })();
+    case "request to restart":
+      return (() => {
+        return {
+          ...state,
+          firstPlayer: initialiseFirstPlayer(),
+          winners: {},
+          status: ""
+        };
+      })();
+    case "request to start":
+      return (() => {
+        const { players } = state;
+        const index = Math.floor(Math.random() * 2);
+        const first = players[index].xo;
+        return {
+          ...state,
+          firstPlayer: first,
+          currentPlayer: players[index]
+        };
+      })();
     default:
     //do nothing;
   }
@@ -367,17 +395,16 @@ export default function Game() {
       ...prev,
       history: tempHistory.concat([{ squares }])
     }));
-
     setSelItems(selItems.slice(0, stepNumber).concat(item));
     setStepNumber(stepNumber + 1);
     setIsNext(!isNext);
-    // get index
-
-    const tempIdx = ((xo) => players.findIndex((player) => player.xo === xo))(
-      squares[item]
-    );
-    setCurrPlayer(players[tempIdx]);
-
+    // get current player
+    dispatch({
+      type: "update current player",
+      payload: {
+        xo: squares[item]
+      }
+    });
     if (jumpToInd) setJumpToInd(false);
   }
 
@@ -425,7 +452,10 @@ export default function Game() {
   const doSetGameStatus = useCallback(() => {
     dispatch({
       type: "update staus",
-      payload: { currentGame: history.history[stepNumber], isNext: isNext }
+      payload: {
+        currentGame: history.history[stepNumber],
+        isNext: isNext
+      }
     });
   }, [history, stepNumber, isNext]);
 
@@ -445,7 +475,7 @@ export default function Game() {
   }
 
   function handleSort(sortOrder) {
-    console.log(`hello${sortOrder}`);
+    //console.log(`hello${sortOrder}`);
     setSortAsc(sortOrder.toUpperCase() === "ASC");
   }
 
@@ -461,25 +491,18 @@ export default function Game() {
       });
       setSelItems([]);
       setStepNumber(0);
-      setFirstPlayer(getFirstPlayer());
       setIsNext(true);
       setMoves([]);
-      setGameStatus("");
-      setWinners({});
       setSortAsc(true);
+      dispatch({ type: "request to restart" });
     }
-    const index = Math.floor(Math.random() * 2);
-    const first = players[index].xo;
-    setFirstPlayer(first);
-    // initialise current newPlayer
-    setCurrPlayer(players[index]);
+    // initialise firstPlayer and currentPlayer
+    dispatch({ type: "request to start" });
     setStarted(true);
   }, [started]);
 
-  // function handleStartGame() {
-  // }
-
   function getScore() {
+    const { players } = game;
     let temp = "";
     players.forEach((item, index) => {
       temp += `${item.name}-${item.score.toString()} `;
@@ -487,21 +510,36 @@ export default function Game() {
     return temp;
   }
 
+  function getGameStatus() {
+    const { status } = game;
+    return status;
+  }
+
+  function getWinners() {
+    const { winners } = game;
+    return winners.winners;
+  }
+
+  function getCurrentPlayer() {
+    const { currentPlayer } = game;
+    return currentPlayer;
+  }
+
   return (
     <div className="game">
       {started && (
         <>
-          <div>{gameStatus}</div>
+          <div>{getGameStatus()}</div>
           <div>({getScore()})</div>
           <div>stepNumber = {stepNumber}</div>
           <div ref={handleLineStyleRef} className="board">
             <Board
               ref={boardRef}
               squares={history.history[stepNumber].squares}
-              winners={winners.winners ? winners.winners : []}
+              winners={getWinners() ? getWinners() : []}
               selItems={selItems}
               stepNumber={stepNumber}
-              currPlayer={currPlayer}
+              currPlayer={getCurrentPlayer()}
               onClick={handleClick}
               jumpToInd={jumpToInd} // indicates that user is moving to previous move
             />
@@ -516,7 +554,7 @@ export default function Game() {
               {sortAsc ? moves.slice().sort() : moves.slice().reverse()}
             </ol>
           </div>
-          {winners.winners && winners.winners.length === 3 ? (
+          {getWinners() && getWinners().length === 3 ? (
             <div className="line" style={lineStyle} />
           ) : null}
         </>
