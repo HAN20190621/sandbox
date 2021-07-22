@@ -2,7 +2,7 @@ import Button from "./Button";
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
-const Header = ({ title, resizing, started, handleStart }) => {
+const Header = ({ title, resizing, started, handleStart, handleRestart }) => {
   const location = useLocation();
   const h1Ref = useRef(null);
   const divRef = useRef(null);
@@ -23,7 +23,11 @@ const Header = ({ title, resizing, started, handleStart }) => {
       <div ref={divRef} style={style}>
         {started && (
           <Link to="./Game">
-            <Button text={"Restart"} colour="green" />
+            <Button
+              text={"Restart"}
+              colour="green"
+              onClick={() => handleRestart(true)}
+            />
           </Link>
         )}
 

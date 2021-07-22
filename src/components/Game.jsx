@@ -146,16 +146,8 @@ const gameReducer = (state, action) => {
           currentPlayer: players[tempIdx]
         };
       })();
-    case "request to restart":
-      return (() => {
-        return {
-          ...state,
-          firstPlayer: initialiseFirstPlayer(),
-          winners: {},
-          status: ""
-        };
-      })();
     case "request to start":
+      console.log(action.type);
       return (() => {
         const { players } = state;
         const index = Math.floor(Math.random() * 2);
@@ -163,7 +155,13 @@ const gameReducer = (state, action) => {
         return {
           ...state,
           firstPlayer: first,
-          currentPlayer: players[index]
+          currentPlayer: players[index],
+          winners: {
+            xo: "",
+            winners: [],
+            score: 0
+          },
+          status: ""
         };
       })();
     default:
@@ -488,12 +486,10 @@ export default function Game(props) {
   }
 
   function handleSort(sortOrder) {
-    //console.log(`hello${sortOrder}`);
-    setSortAsc(sortOrder.toUpperCase() === "ASC");
+    setSortAsc(sortOrder);
   }
 
   useEffect(() => {
-    console.log(started);
     // has the game started - then this must be request to restart
     if (started) {
       setHistory({
@@ -508,11 +504,11 @@ export default function Game(props) {
       setIsNext(true);
       setMoves([]);
       setSortAsc(true);
-      dispatch({ type: "request to restart" });
-    } else {
-      // initialise firstPlayer and currentPlayer
+      setStarted(false);
       dispatch({ type: "request to start" });
-      setStarted(true);
+    } else {
+      //initialise firstPlayer and currentPlayer
+      //dispatch({ type: "request to start" });
     }
   }, [started]);
 
@@ -542,37 +538,35 @@ export default function Game(props) {
 
   return (
     <div className="game">
-      {started && (
-        <>
-          <div>{getGameStatus()}</div>
-          <div>({getScore()})</div>
-          <div>stepNumber = {stepNumber}</div>
-          <div ref={handleLineStyleRef} className="board">
-            <Board
-              squares={history.history[stepNumber].squares}
-              winners={getWinners() ? getWinners() : []}
-              selItems={selItems}
-              stepNumber={stepNumber}
-              currPlayer={getCurrentPlayer()}
-              onClick={handleClick}
-              jumpToInd={jumpToInd} // indicates that user is moving to previous move
-            />
-          </div>
-          <div className="game-info">
-            <ToggleButton
-              toggle={handleSort}
-              labels={["Desc", "Asc"]}
-              changeOpacity={false}
-            />
-            <ol reversed={!sortAsc}>
-              {sortAsc ? moves.slice().sort() : moves.slice().reverse()}
-            </ol>
-          </div>
-          {getWinners() && getWinners().length === 3 ? (
-            <div className="line" style={lineStyle} />
-          ) : null}
-        </>
-      )}
+      <>
+        <div>{getGameStatus()}</div>
+        <div>({getScore()})</div>
+        <div>stepNumber = {stepNumber}</div>
+        <div ref={handleLineStyleRef} className="board">
+          <Board
+            squares={history.history[stepNumber].squares}
+            winners={getWinners() ? getWinners() : []}
+            selItems={selItems}
+            stepNumber={stepNumber}
+            currPlayer={getCurrentPlayer()}
+            onClick={handleClick}
+            jumpToInd={jumpToInd} // indicates that user is moving to previous move
+          />
+        </div>
+        <div className="game-info">
+          <ToggleButton
+            toggle={handleSort}
+            labels={["Desc", "Asc"]}
+            changeOpacity={false}
+          />
+          <ol reversed={!sortAsc}>
+            {sortAsc ? moves.slice().sort() : moves.slice().reverse()}
+          </ol>
+        </div>
+        {getWinners() && getWinners().length === 3 ? (
+          <div className="line" style={lineStyle} />
+        ) : null}
+      </>
     </div>
   );
 }

@@ -19,7 +19,7 @@ function ToggleButton(props) {
   const [sortAsc, setSortAsc] = useState(true);
 
   function toggleButton() {
-    props.xsort(!sortAsc);
+    props.toggle(!sortAsc);
     setSortAsc(!sortAsc);
   }
 

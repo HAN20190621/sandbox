@@ -35,7 +35,8 @@ const App = () => {
   const [coords, setCoords] = useState({}); // window coordinates
   const appRef = useRef(null);
   // start the game - flags
-  const [started, setStarted] = useState(false);
+  const [start, setStart] = useState(false);
+  const [restart, setRestart] = useState(false);
 
   const updateWindowCoords = () => {
     let timeout;
@@ -63,7 +64,12 @@ const App = () => {
 
   function handleStart(started) {
     //console.log("did i get here=" + started);
-    setStarted(started);
+    setStart(started);
+  }
+
+  function handleRestart(started) {
+    //console.log("did i get here=" + started);
+    setRestart(started);
   }
 
   return (
@@ -72,8 +78,9 @@ const App = () => {
         <Header
           title="tik-tak-toe"
           resizing={resizing}
-          started={started}
+          started={start}
           handleStart={handleStart}
+          handleRestart={handleRestart}
         />
         <Switch>
           <Route path="/about" component={About} />
@@ -84,7 +91,9 @@ const App = () => {
           <Route path="/board" component={Board} />
           <Route
             path="/game"
-            render={(props) => <Game {...props} started={started} />}
+            render={(props) => (
+              <Game {...props} started={start} restarted={restart} />
+            )}
           />
         </Switch>
         <Footer />
