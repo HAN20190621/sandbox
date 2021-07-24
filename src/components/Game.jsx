@@ -1,31 +1,33 @@
-import { useCallback, useEffect, useState, useReducer } from "react";
+import { useCallback, useEffect, useState, useReducer } from 'react';
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
-import Board from "./Board";
-import ToggleButton from "./ToggleButton";
+import Board from './Board';
+import ToggleButton from './ToggleButton';
+import Button from './Button';
+import { tSExternalModuleReference } from '@babel/types';
 
 const initialisePlayers = () => {
   const players = [
     {
       rank: 1,
-      name: "",
-      colour: "",
-      xo: "",
-      status: "",
-      score: 0
+      name: '',
+      colour: '',
+      xo: '',
+      status: '',
+      score: 0,
     },
     {
       rank: 2,
-      name: "",
-      colour: "",
-      xo: "",
-      status: "",
-      score: 0
-    }
+      name: '',
+      colour: '',
+      xo: '',
+      status: '',
+      score: 0,
+    },
   ];
   const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
-  const xo = ["X", "O"][xoId];
+  const xo = ['X', 'O'][xoId];
   players[xoId].xo = xo;
-  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
+  players[xoId === 0 ? 1 : 0].xo = xo === 'X' ? 'O' : 'X';
   return players;
 };
 
@@ -33,11 +35,11 @@ const initialisePlayers = () => {
 // 1 - X  2 - O
 const initialiseFirstPlayer = () => {
   const idx = Math.floor(Math.random() * 2);
-  return ["X", "O"][idx];
+  return ['X', 'O'][idx];
 };
 
 const initialiseWinners = () => {
-  return { xo: "", winners: [], score: 0 };
+  return { xo: '', winners: [], score: 0 };
 };
 
 const initialiseGame = (() => {
@@ -52,7 +54,7 @@ const initialiseGame = (() => {
     currentPlayer: currentPlayer,
     firstPlayer: firstPlayer,
     winners: initialiseWinners(),
-    status: ""
+    status: '',
   };
 })();
 
@@ -60,7 +62,7 @@ const initialiseGame = (() => {
 const gameReducer = (state, action) => {
   //console.log(action.type);
   switch (action.type) {
-    case "update winners":
+    case 'update winners':
       return (() => {
         let { xo, winners, score } = action.payload;
         const players = [...state.players];
@@ -75,11 +77,11 @@ const gameReducer = (state, action) => {
           winners: {
             xo: xo,
             winners: winners,
-            score: score
-          }
+            score: score,
+          },
         };
       })();
-    case "reset winners":
+    case 'reset winners':
       return (() => {
         const { jumpToInd } = action.payload;
         const { winners } = state; //({ winners }) = state;
@@ -94,16 +96,16 @@ const gameReducer = (state, action) => {
             ...state,
             players: players,
             winners: {
-              xo: "",
+              xo: '',
               winners: [],
-              score: winners.score - 1
-            }
+              score: winners.score - 1,
+            },
           };
         } else {
           return { ...state };
         }
       })();
-    case "update status":
+    case 'update status':
       return (() => {
         const { players, currentPlayer, firstPlayer, winners } = state;
         let { xo } = currentPlayer;
@@ -114,28 +116,28 @@ const gameReducer = (state, action) => {
         const player = players[tempIdx];
         let tempStatus;
         if (winners.winners && winners.winners.length > 0) {
-          tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
+          tempStatus = `Winner: ${player.xo}${player.name !== '' ? '-' : ''}${
             player.name
           }`;
         } else if (
           currentGame.squares.filter((item) => item == null).length === 0
         ) {
-          tempStatus = "No winner - draw!";
+          tempStatus = 'No winner - draw!';
         } else {
           xo = isNext
-            ? firstPlayer === "X"
-              ? "X"
-              : "O"
-            : firstPlayer === "X"
-            ? "O"
-            : "X";
-          tempStatus = `Next player: ${xo}${player.name !== "" ? "-" : ""}${
+            ? firstPlayer === 'X'
+              ? 'X'
+              : 'O'
+            : firstPlayer === 'X'
+            ? 'O'
+            : 'X';
+          tempStatus = `Next player: ${xo}${player.name !== '' ? '-' : ''}${
             player.name
           }`;
         }
         return { ...state, status: tempStatus };
       })();
-    case "update current player":
+    case 'update current player':
       return (() => {
         const { xo } = action.payload;
         const { players } = state;
@@ -143,10 +145,10 @@ const gameReducer = (state, action) => {
           players.findIndex((player) => player.xo === xo))(xo);
         return {
           ...state,
-          currentPlayer: players[tempIdx]
+          currentPlayer: players[tempIdx],
         };
       })();
-    case "request to start":
+    case 'request to start':
       console.log(action.type);
       return (() => {
         const { players } = state;
@@ -157,11 +159,11 @@ const gameReducer = (state, action) => {
           firstPlayer: first,
           currentPlayer: players[index],
           winners: {
-            xo: "",
+            xo: '',
             winners: [],
-            score: 0
+            score: 0,
           },
-          status: ""
+          status: '',
         };
       })();
     default:
@@ -173,9 +175,9 @@ export default function Game(props) {
   const [history, setHistory] = useState({
     history: [
       {
-        squares: Array(9).fill(null)
-      }
-    ]
+        squares: Array(9).fill(null),
+      },
+    ],
   });
 
   const [game, dispatch] = useReducer(gameReducer, initialiseGame);
@@ -184,16 +186,18 @@ export default function Game(props) {
   const [isNext, setIsNext] = useState(true); // next player
   const [moves, setMoves] = useState([]);
   const [sortAsc, setSortAsc] = useState(true);
-  const [started, setStarted] = useState(props.started);
+  const [start, setStart] = useState(props.start);
   const [jumpToInd, setJumpToInd] = useState(false);
   const [lineStyle, setLineStyle] = useState({});
   const [target, setTarget] = useState(null);
 
   // strike - useCallback REF
   const handleLineStyleRef = useCallback((boardRef) => {
-    setTimeout(() => {
-      setTarget(boardRef.getBoundingClientRect());
-    }, 300);
+    if (boardRef) {
+      setTimeout(() => {
+        setTarget(boardRef.getBoundingClientRect());
+      }, 300);
+    }
   }, []);
 
   // strike the winner symbols
@@ -207,17 +211,17 @@ export default function Game(props) {
       horizontal: [
         [0, 1, 2],
         [3, 4, 5],
-        [6, 7, 8]
+        [6, 7, 8],
       ],
       vertical: [
         [0, 3, 6],
         [1, 4, 7],
-        [2, 5, 8]
+        [2, 5, 8],
       ],
       diagonal: [
         [0, 4, 8],
-        [2, 4, 6]
-      ]
+        [2, 4, 6],
+      ],
     };
 
     if (target === null) return;
@@ -238,7 +242,7 @@ export default function Game(props) {
     // if index = 1 then do nothing
     // if index = 3 then adjust top +
     // rotate 45 degree
-    let typ = "";
+    let typ = '';
     let pos = 0;
     let same = false;
     const rect = target;
@@ -258,93 +262,93 @@ export default function Game(props) {
     }
     //
     switch (typ) {
-      case "horizontal":
+      case 'horizontal':
         switch (pos) {
           case 0:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top + rect.height * 0.16,
-              width: rect.width
+              width: rect.width,
             });
             break;
           case 1:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top + rect.height * 0.5,
-              width: rect.width
+              width: rect.width,
             });
             break;
           case 2:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top + rect.height * 0.85,
-              width: rect.width
+              width: rect.width,
             });
             break;
           default:
           // do nothing
         }
         break;
-      case "vertical":
+      case 'vertical':
         switch (pos) {
           case 0:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left + rect.width * 0.17,
               top: rect.top,
-              width: "10px",
-              height: rect.height
+              width: '10px',
+              height: rect.height,
             });
             break;
           case 1:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left + rect.width * 0.5,
               top: rect.top,
-              width: "10px",
-              height: rect.height
+              width: '10px',
+              height: rect.height,
             });
             break;
           case 2:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left + rect.width * 0.825,
               top: rect.top,
-              width: "10px",
-              height: rect.height
+              width: '10px',
+              height: rect.height,
             });
             break;
           default:
           // do nothing
         }
         break;
-      case "diagonal":
+      case 'diagonal':
         switch (pos) {
           case 0:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               left: rect.left,
               top: rect.top, // rect.top + rect.height / 2,
               width: Math.sqrt(
                 rect.width * rect.width + rect.height * rect.height
               ),
-              transform: "rotate(48deg)",
-              transformOrigin: "top left"
+              transform: 'rotate(48deg)',
+              transformOrigin: 'top left',
             });
             break;
           case 1:
             setLineStyle({
-              position: "absolute",
+              position: 'absolute',
               // left: rect.left + rect.width,
               top: rect.top + rect.height, // rect.top + rect.height / 2,
               width: Math.sqrt(
                 rect.width * rect.width + rect.height * rect.height
               ),
-              transform: "rotate(-48deg)",
-              transformOrigin: "top left"
+              transform: 'rotate(-48deg)',
+              transformOrigin: 'top left',
             });
             break;
           default:
@@ -370,7 +374,7 @@ export default function Game(props) {
       [2, 4, 6],
       [2, 5, 8],
       [3, 4, 5],
-      [6, 7, 8]
+      [6, 7, 8],
     ];
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
@@ -381,8 +385,8 @@ export default function Game(props) {
       ) {
         // get the last click item and calc the offset
         dispatch({
-          type: "update winners",
-          payload: { xo: squares[a], winners: [a, b, c], score: 1 }
+          type: 'update winners',
+          payload: { xo: squares[a], winners: [a, b, c], score: 1 },
         });
       }
     }
@@ -395,26 +399,26 @@ export default function Game(props) {
     if (squares[item]) return; // check if item exists // calculate winner????
     //
     squares[item] = isNext
-      ? game.firstPlayer === "X"
-        ? "X"
-        : "O"
-      : game.firstPlayer === "X"
-      ? "O"
-      : "X";
+      ? game.firstPlayer === 'X'
+        ? 'X'
+        : 'O'
+      : game.firstPlayer === 'X'
+      ? 'O'
+      : 'X';
     //console.log(squares);
     setHistory((prev) => ({
       ...prev,
-      history: copyHistory.concat([{ squares }])
+      history: copyHistory.concat([{ squares }]),
     }));
     setSelItems(selItems.slice(0, stepNumber).concat(item));
     setStepNumber(copyHistory.length);
     setIsNext(!isNext);
     // get current player
     dispatch({
-      type: "update current player",
+      type: 'update current player',
       payload: {
-        xo: squares[item]
-      }
+        xo: squares[item],
+      },
     });
     if (jumpToInd) setJumpToInd(false);
   }
@@ -422,15 +426,15 @@ export default function Game(props) {
   const doSetMoves = useCallback(() => {
     const newMoves = history.history.map((hist, move) => {
       const row = [0, 1, 2].includes(selItems[move - 1])
-        ? "0"
+        ? '0'
         : [3, 4, 5].includes(selItems[move - 1])
-        ? "1"
+        ? '1'
         : [6, 7, 8].includes(selItems[move - 1])
-        ? "2"
-        : "";
+        ? '2'
+        : '';
       const desc = move
         ? `Go to move ${move} (${selItems[move - 1] % 3}, ${row})`
-        : "Go to game start";
+        : 'Go to game start';
       return (
         <li key={move}>
           <button
@@ -453,8 +457,8 @@ export default function Game(props) {
       if (selItems.length !== stepNumber) {
         // reset score
         dispatch({
-          type: "reset winners",
-          payload: { jumpToInd: jumpToInd }
+          type: 'reset winners',
+          payload: { jumpToInd: jumpToInd },
         });
       }
     }
@@ -462,23 +466,21 @@ export default function Game(props) {
 
   const doSetGameStatus = useCallback(() => {
     dispatch({
-      type: "update status",
+      type: 'update status',
       payload: {
         currentGame: history.history[stepNumber],
-        isNext: isNext
-      }
+        isNext: isNext,
+      },
     });
   }, [history, stepNumber, isNext]);
 
   useEffect(() => {
-    if (started) {
-      // get player moves
-      doSetMoves();
-      // winner, score and game status
-      doSetGameStatus();
-      //
-    }
-  }, [started, doSetMoves, doSetGameStatus]); // history.history[stepNumber].squares );
+    // get player moves
+    doSetMoves();
+    // winner, score and game status
+    doSetGameStatus();
+    //
+  }, [isNext, doSetMoves, doSetGameStatus]); // history.history[stepNumber].squares );
 
   function jumpTo(step) {
     setStepNumber(step);
@@ -490,31 +492,31 @@ export default function Game(props) {
   }
 
   useEffect(() => {
-    // has the game started - then this must be request to restart
-    if (started) {
+    console.log('hello=' + start);
+    // has the game start - then this must be request to restart
+    if (start) {
       setHistory({
         history: [
           {
-            squares: Array(9).fill(null)
-          }
-        ]
+            squares: Array(9).fill(null),
+          },
+        ],
       });
       setSelItems([]);
       setStepNumber(0);
       setIsNext(true);
       setMoves([]);
       setSortAsc(true);
-      setStarted(false);
-      dispatch({ type: "request to start" });
-    } else {
-      //initialise firstPlayer and currentPlayer
-      //dispatch({ type: "request to start" });
+      dispatch({ type: 'request to start' });
+      setStart(false);
     }
-  }, [started]);
+    //initialise firstPlayer and currentPlayer
+    //dispatch({ type: "request to start" });
+  }, [start]);
 
   function getScore() {
     const { players } = game;
-    let temp = "";
+    let temp = '';
     players.forEach((item, index) => {
       temp += `${item.name}-${item.score.toString()} `;
     });
@@ -539,6 +541,13 @@ export default function Game(props) {
   return (
     <div className="game">
       <>
+        <Button
+          text="Restart"
+          colour="green"
+          onClick={() => {
+            setStart(true);
+          }}
+        />
         <div>{getGameStatus()}</div>
         <div>({getScore()})</div>
         <div>stepNumber = {stepNumber}</div>
@@ -556,7 +565,7 @@ export default function Game(props) {
         <div className="game-info">
           <ToggleButton
             toggle={handleSort}
-            labels={["Desc", "Asc"]}
+            labels={['Desc', 'Asc']}
             changeOpacity={false}
           />
           <ol reversed={!sortAsc}>

@@ -1,13 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import About from "./components/About";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Players from "./components/Players";
-import Board from "./components/Board";
-import Game from "./components/Game";
-import debounce from "lodash/debounce";
-import "./styles.css";
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import About from './components/About';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import Players from './components/Players';
+import Board from './components/Board';
+import Game from './components/Game';
+import debounce from 'lodash/debounce';
+import './styles.css';
 
 //https://reactrouter.com/web/example/no-match
 /*
@@ -36,7 +41,6 @@ const App = () => {
   const appRef = useRef(null);
   // start the game - flags
   const [start, setStart] = useState(false);
-  const [restart, setRestart] = useState(false);
 
   const updateWindowCoords = () => {
     let timeout;
@@ -47,8 +51,8 @@ const App = () => {
     }, 200);
     const rect = appRef.current.getBoundingClientRect();
     setCoords({
-      left: rect.x + rect.width / 2, // add half the width of the button for centering
-      top: rect.y + window.scrollY + 50 // add scrollY offset, as soon as getBountingClientRect takes on screen coords
+      left: rect.x + rect.width / 2, // add half the width of the button for center
+      top: rect.y + window.scrollY + 50, // add scrollY offset, as soon as getBoundingClientRect takes on screen coords
     });
   };
 
@@ -56,20 +60,14 @@ const App = () => {
 
   useEffect(() => {
     // event listener
-    window.addEventListener("resize", updateCoords);
+    window.addEventListener('resize', updateCoords);
     return () => {
-      window.removeEventListener("resize", updateCoords);
+      window.removeEventListener('resize', updateCoords);
     };
   }, [updateCoords]);
 
   function handleStart(started) {
-    //console.log("did i get here=" + started);
     setStart(started);
-  }
-
-  function handleRestart(started) {
-    //console.log("did i get here=" + started);
-    setRestart(started);
   }
 
   return (
@@ -80,7 +78,6 @@ const App = () => {
           resizing={resizing}
           started={start}
           handleStart={handleStart}
-          handleRestart={handleRestart}
         />
         <Switch>
           <Route path="/about" component={About} />
@@ -91,9 +88,7 @@ const App = () => {
           <Route path="/board" component={Board} />
           <Route
             path="/game"
-            render={(props) => (
-              <Game {...props} started={start} restarted={restart} />
-            )}
+            render={(props) => <Game {...props} start={start} />}
           />
         </Switch>
         <Footer />
@@ -104,9 +99,9 @@ const App = () => {
 
 const styles = {
   app: {
-    position: "absolute",
-    margin: "20px 20px"
-  }
+    position: 'absolute',
+    margin: '20px 20px',
+  },
   //width: 200,
   //transform: "translate(-100px, -100%)"
 };
@@ -114,6 +109,7 @@ const styles = {
 export default App;
 
 /*
+https://stackoverflow.com/questions/39910041/how-to-route-without-reloading-the-whole-page
 https://ui.dev/react-router-v4-pass-props-to-components/
 <Route
   path='/dashboard'
@@ -125,3 +121,7 @@ So to recap, if you need to pass a prop to a component being rendered by
 React Router v4, instead of using Routes component prop, use its render prop. 
 With render, you’re in charge of  creating the element and can pass 
 the component any props you’d like.*/
+
+//https://reactrouter.com/web/example/auth-workflow
+//https://stackoverflow.com/questions/46820682/how-do-i-reload-a-page-with-react-router
+//https://stackoverflow.com/questions/66881928/how-can-you-initialize-a-child-components-state-from-inside-a-parent-component-i
