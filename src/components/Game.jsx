@@ -503,6 +503,11 @@ export default function Game(props) {
     return temp;
   }
 
+  function showLine() {
+    const { winners } = game;
+    return winners.winners.length === 3;
+  }
+
   function getWinners() {
     const { winners } = game;
     return winners.winners;
@@ -530,7 +535,7 @@ export default function Game(props) {
         <div ref={handleLineStyleRef} className="board">
           <Board
             squares={history.history[stepNumber].squares}
-            winners={getWinners() ? getWinners() : []}
+            winners={showLine() ? getWinners() : []}
             selItems={selItems}
             stepNumber={stepNumber}
             currPlayer={getCurrentPlayer()}
@@ -548,9 +553,7 @@ export default function Game(props) {
             {sortAsc ? moves.slice().sort() : moves.slice().reverse()}
           </ol>
         </div>
-        {getWinners() && getWinners().length === 3 ? (
-          <div className="line" style={lineStyle} />
-        ) : null}
+        {showLine() && <div className="line" style={lineStyle} />}
       </>
     </div>
   );
