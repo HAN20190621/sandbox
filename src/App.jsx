@@ -1,18 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
-import About from './components/About';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Players from './components/Players';
-import Board from './components/Board';
-import Game from './components/Game';
-import debounce from 'lodash/debounce';
-import './styles.css';
+import React, { useState, useEffect, useRef } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import About from "./components/About";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Players from "./components/Players";
+import Board from "./components/Board";
+import Game from "./components/Game";
+import debounce from "lodash/debounce";
+import "./styles.css";
 
 //https://reactrouter.com/web/example/no-match
 /*
@@ -39,8 +34,6 @@ const App = () => {
   const [resizing, setResizing] = useState(false); // boolean to indicate window is resizing
   const [coords, setCoords] = useState({}); // window coordinates
   const appRef = useRef(null);
-  // start the game - flags
-  const [start, setStart] = useState(false);
 
   const updateWindowCoords = () => {
     let timeout;
@@ -52,7 +45,7 @@ const App = () => {
     const rect = appRef.current.getBoundingClientRect();
     setCoords({
       left: rect.x + rect.width / 2, // add half the width of the button for center
-      top: rect.y + window.scrollY + 50, // add scrollY offset, as soon as getBoundingClientRect takes on screen coords
+      top: rect.y + window.scrollY + 50 // add scrollY offset, as soon as getBoundingClientRect takes on screen coords
     });
   };
 
@@ -60,25 +53,16 @@ const App = () => {
 
   useEffect(() => {
     // event listener
-    window.addEventListener('resize', updateCoords);
+    window.addEventListener("resize", updateCoords);
     return () => {
-      window.removeEventListener('resize', updateCoords);
+      window.removeEventListener("resize", updateCoords);
     };
   }, [updateCoords]);
-
-  function handleStart(started) {
-    setStart(started);
-  }
 
   return (
     <Router>
       <div ref={appRef} className="container" style={{ ...styles.app, coords }}>
-        <Header
-          title="tik-tak-toe"
-          resizing={resizing}
-          started={start}
-          handleStart={handleStart}
-        />
+        <Header title="tik-tak-toe" resizing={resizing} />
         <Switch>
           <Route path="/about" component={About} />
           <Route
@@ -86,10 +70,7 @@ const App = () => {
             render={(props) => <Players {...props} resizing={resizing} />}
           />
           <Route path="/board" component={Board} />
-          <Route
-            path="/game"
-            render={(props) => <Game {...props} start={start} />}
-          />
+          <Route path="/game" component={Game} />} />
         </Switch>
         <Footer />
       </div>
@@ -99,9 +80,9 @@ const App = () => {
 
 const styles = {
   app: {
-    position: 'absolute',
-    margin: '20px 20px',
-  },
+    position: "absolute",
+    margin: "20px 20px"
+  }
   //width: 200,
   //transform: "translate(-100px, -100%)"
 };
