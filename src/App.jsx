@@ -4,7 +4,6 @@ import About from "./components/About";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Players from "./components/Players";
-import Board from "./components/Board";
 import Game from "./components/Game";
 import debounce from "lodash/debounce";
 import "./styles.css";
@@ -69,8 +68,7 @@ const App = () => {
             path="/players"
             render={(props) => <Players {...props} resizing={resizing} />}
           />
-          <Route path="/board" component={Board} />
-          <Route path="/game" component={Game} />} />
+          <Route path="/game" component={Game} />
         </Switch>
         <Footer />
       </div>
