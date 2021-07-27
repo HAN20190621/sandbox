@@ -402,11 +402,6 @@ export default function Game(props) {
     return temp;
   }
 
-  function showLine() {
-    const { winners } = game;
-    return winners.winners.length === 3;
-  }
-
   function getWinners() {
     const { winners } = game;
     return winners.winners;
@@ -435,7 +430,7 @@ export default function Game(props) {
         <div className="board">
           <Board
             squares={history.history[stepNumber].squares}
-            winners={showLine() ? getWinners() : []}
+            winners={getWinners()}
             selItems={selItems}
             stepNumber={stepNumber}
             currPlayer={getCurrentPlayer()}

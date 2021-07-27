@@ -37,7 +37,7 @@ const Board = ({
             <div key={`col${idx_}`}>
               <Square
                 key={idx_}
-                winStyle={jumpToInd ? normalStyle : setWinStyle(idx_)}
+                style={jumpToInd ? normalStyle : setWinStyle(idx_)}
                 value={squares[idx_]}
                 idx={idx_}
                 onClick={() => {
@@ -74,11 +74,11 @@ const Board = ({
 };
 
 Board.defaultProps = {
-  currPlayer: { colour: "green" },
+  currPlayer: { colour: "red" },
   squares: Array(9).fill(null),
   winners: ["x"],
   selItems: [0, 12, 3, 4],
-  jumpToInd: true,
+  jumpToInd: false,
   onClick: () => {}
 };
 

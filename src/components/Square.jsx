@@ -23,7 +23,7 @@ Square.propTypes = {
 
 Square.defaultProps = {
   idx: 0,
-  style: { color: "green" },
+  style: { color: "red" },
   value: "x",
   onClick: () => {}
 };
