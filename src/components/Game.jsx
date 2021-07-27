@@ -258,6 +258,7 @@ export default function Game(props) {
     const copyHistory = history.history.slice(0, stepNumber + 1); // advance
     const current = copyHistory[copyHistory.length - 1];
     const squares = current.squares.slice(); // copy
+    //
     if (game.winners.winners.length === 3 || squares[item]) return; // check if item exists // calculate winner????
     //
     squares[item] = isNext
