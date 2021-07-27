@@ -22,20 +22,20 @@ export default function Players({ players, setPlayers, resizing }) {
     return history.listen((location) => {
       if (history.action === "PUSH") {
         setLocationKeys([location.key]);
-        console.log(location.key);
-        console.log("push");
+        //console.log(location.key);
+        //console.log("push");
       }
 
       if (history.action === "POP") {
         if (locationKeys[1] === location.key) {
           //setLocationKeys(([_, ...keys]) => keys);
-          console.log("pop");
-          console.log(location.key);
+          //console.log("pop");
+          //console.log(location.key);
           // Handle forward event
         } else {
           setLocationKeys((keys) => [location.key, ...keys]);
-          console.log("something else");
-          console.log(location.key);
+          //console.log("something else");
+          //console.log(location.key);
           // Handle back event
         }
       }

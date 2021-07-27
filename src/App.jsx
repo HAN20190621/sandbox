@@ -30,10 +30,36 @@ useEffect(() => {
 */
 //https://stackoverflow.com/questions/65402977/how-to-observe-when-window-resize-stop-in-react
 
+const initialisePlayers = () => {
+  const players = [
+    {
+      rank: 1,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    },
+    {
+      rank: 2,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    }
+  ];
+  const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
+  const xo = ["X", "O"][xoId];
+  players[xoId].xo = xo;
+  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
+  return players;
+};
+
 const App = () => {
   const [resizing, setResizing] = useState(false); // boolean to indicate window is resizing
   const [coords, setCoords] = useState({}); // window coordinates
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState(initialisePlayers());
   const appRef = useRef(null);
 
   const updateWindowCoords = () => {
@@ -60,6 +86,11 @@ const App = () => {
     };
   }, [updateCoords]);
 
+  function handleSetPlayers(players) {
+    //console.log(players);
+    setPlayers(players);
+  }
+
   return (
     <Router>
       <div ref={appRef} className="container" style={{ ...styles.app, coords }}>
@@ -73,11 +104,14 @@ const App = () => {
                 {...props}
                 resizing={resizing}
                 players={players}
-                setPlayers={setPlayers}
+                setPlayers={handleSetPlayers}
               />
             )}
           />
-          <Route path="/game" component={Game} />
+          <Route
+            path="/game"
+            render={(props) => <Game {...props} players={players} />}
+          />
         </Switch>
         <Footer />
       </div>
