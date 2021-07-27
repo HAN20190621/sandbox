@@ -3,32 +3,7 @@ import { useCallback, useEffect, useState, useReducer } from "react";
 import Board from "./Board";
 import ToggleButton from "./ToggleButton";
 import Button from "./Button";
-
-const initialisePlayers = () => {
-  const players = [
-    {
-      rank: 1,
-      name: "",
-      colour: "",
-      xo: "",
-      status: "",
-      score: 0
-    },
-    {
-      rank: 2,
-      name: "",
-      colour: "",
-      xo: "",
-      status: "",
-      score: 0
-    }
-  ];
-  const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
-  const xo = ["X", "O"][xoId];
-  players[xoId].xo = xo;
-  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
-  return players;
-};
+import gameReducer from "../reducers/gameReducer";
 
 // who starts first
 // 1 - X  2 - O
@@ -41,8 +16,7 @@ const initialiseWinners = () => {
   return { xo: "", winners: [], score: 0 };
 };
 
-const initialiseGame = (() => {
-  const players = initialisePlayers();
+const initialiseGame = (players) => {
   const firstPlayer = initialiseFirstPlayer();
   const tempIdx = ((xo) => players.findIndex((player) => player.xo === xo))(
     firstPlayer
@@ -54,85 +28,6 @@ const initialiseGame = (() => {
     firstPlayer: firstPlayer,
     winners: initialiseWinners()
   };
-})();
-
-// game reducer
-const gameReducer = (state, action) => {
-  console.log(action.type);
-  switch (action.type) {
-    case "update winners":
-      return (() => {
-        let { xo, winners, score } = action.payload;
-        const players = [...state.players];
-        const tempIdx = ((xo) =>
-          players.findIndex((player) => player.xo === xo))(xo);
-        const player = players[tempIdx];
-        player.score += 1;
-        players[tempIdx] = player;
-        return {
-          ...state,
-          players: players,
-          winners: {
-            xo: xo,
-            winners: winners,
-            score: score
-          }
-        };
-      })();
-    case "reset winners":
-      return (() => {
-        const { jumpToInd } = action.payload;
-        const { winners } = state; //({ winners }) = state;
-        if (winners.score > 0) {
-          const players = [...state.players];
-          const tempIdx = ((xo) =>
-            players.findIndex((player) => player.xo === xo))(winners.xo);
-          const player = players[tempIdx];
-          player.score += jumpToInd ? -1 : 1;
-          players[tempIdx] = player;
-          return {
-            ...state,
-            players: players,
-            winners: {
-              xo: "",
-              winners: [],
-              score: winners.score - 1
-            }
-          };
-        } else {
-          return { ...state };
-        }
-      })();
-    case "update current player":
-      return (() => {
-        const { xo } = action.payload;
-        const { players } = state;
-        const tempIdx = ((xo) =>
-          players.findIndex((player) => player.xo === xo))(xo);
-        return {
-          ...state,
-          currentPlayer: players[tempIdx]
-        };
-      })();
-    case "request to start":
-      return (() => {
-        const { players } = state;
-        const index = Math.floor(Math.random() * 2);
-        const first = players[index].xo;
-        return {
-          ...state,
-          firstPlayer: first,
-          currentPlayer: players[index],
-          winners: {
-            xo: "",
-            winners: [],
-            score: 0
-          }
-        };
-      })();
-    default:
-      throw new Error(); //do nothing;
-  }
 };
 
 export default function Game(props) {
@@ -144,7 +39,10 @@ export default function Game(props) {
     ]
   });
 
-  const [game, dispatch] = useReducer(gameReducer, initialiseGame);
+  const [game, dispatch] = useReducer(
+    gameReducer,
+    initialiseGame(props.players)
+  );
   const [selItems, setSelItems] = useState([]);
   const [stepNumber, setStepNumber] = useState(0);
   const [isNext, setIsNext] = useState(true); // next player
@@ -558,6 +456,41 @@ export default function Game(props) {
     </div>
   );
 }
+
+const initialisePlayers = () => {
+  const players = [
+    {
+      rank: 1,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    },
+    {
+      rank: 2,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    }
+  ];
+  const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
+  const xo = ["X", "O"][xoId];
+  players[xoId].xo = xo;
+  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
+  return players;
+};
+
+Game.defaultProps = {
+  players: initialisePlayers(),
+  squares: Array(9).fill(null),
+  winners: ["x"],
+  selItems: [0, 12, 3, 4],
+  jumpToInd: true,
+  onClick: () => {}
+};
 
 //https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
 // https://nikgrozev.com/2019/04/07/reacts-usecallback-and-usememo-hooks-by-example/

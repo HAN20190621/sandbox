@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Modal from './Modal';
-import Player from './Player';
-import EditPlayer from './EditPlayer';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from "react";
+import Modal from "./Modal";
+import Player from "./Player";
+import EditPlayer from "./EditPlayer";
+import { useHistory } from "react-router-dom";
 
 // players, handlePlayers
 export default function Players({ players, setPlayers, resizing }) {
@@ -20,33 +20,33 @@ export default function Players({ players, setPlayers, resizing }) {
 
   useEffect(() => {
     return history.listen((location) => {
-      if (history.action === 'PUSH') {
+      if (history.action === "PUSH") {
         setLocationKeys([location.key]);
         console.log(location.key);
-        console.log('push');
+        console.log("push");
       }
 
-      if (history.action === 'POP') {
+      if (history.action === "POP") {
         if (locationKeys[1] === location.key) {
           //setLocationKeys(([_, ...keys]) => keys);
-          console.log('pop');
+          console.log("pop");
           console.log(location.key);
           // Handle forward event
         } else {
           setLocationKeys((keys) => [location.key, ...keys]);
-          console.log('something else');
+          console.log("something else");
           console.log(location.key);
           // Handle back event
         }
       }
     });
-  }, [locationKeys]);
+  }, [locationKeys, history]);
 
   useEffect(() => {
     if (init) return;
     setDirty([
       { rank: 1, isDirty: false },
-      { rank: 2, isDirty: false },
+      { rank: 2, isDirty: false }
     ]);
     setInit(true);
   }, [init, players]);
@@ -97,7 +97,7 @@ export default function Players({ players, setPlayers, resizing }) {
       //left: rect.x + rect.width / 2, // add half the width of the button for centering
       //top: rect.y + window.scrollY + 50, // add scrollY offset, as soon as getBountingClientRect takes on screen coords
       left: rect.left - 38,
-      top: rect.top + 12 + 50,
+      top: rect.top + 12 + 50
     });
   };
 
@@ -176,20 +176,20 @@ Players.defaultProps = {
   players: [
     {
       rank: 1,
-      name: 'tik-tak-toe',
-      colour: 'green',
-      xo: 'x',
-      status: '',
-      score: 0,
+      name: "tik-tak-toe",
+      colour: "green",
+      xo: "x",
+      status: "",
+      score: 0
     },
     {
       rank: 2,
-      name: 'coco',
-      colour: 'yellow',
-      xo: 'o',
-      status: '',
-      score: 0,
-    },
+      name: "coco",
+      colour: "yellow",
+      xo: "o",
+      status: "",
+      score: 0
+    }
   ],
-  setPlayers: () => {},
+  setPlayers: () => {}
 };

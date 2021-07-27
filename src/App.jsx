@@ -29,9 +29,11 @@ useEffect(() => {
 }, []);
 */
 //https://stackoverflow.com/questions/65402977/how-to-observe-when-window-resize-stop-in-react
+
 const App = () => {
   const [resizing, setResizing] = useState(false); // boolean to indicate window is resizing
   const [coords, setCoords] = useState({}); // window coordinates
+  const [players, setPlayers] = useState([]);
   const appRef = useRef(null);
 
   const updateWindowCoords = () => {
@@ -66,7 +68,14 @@ const App = () => {
           <Route path="/about" component={About} />
           <Route
             path="/players"
-            render={(props) => <Players {...props} resizing={resizing} />}
+            render={(props) => (
+              <Players
+                {...props}
+                resizing={resizing}
+                players={players}
+                setPlayers={setPlayers}
+              />
+            )}
           />
           <Route path="/game" component={Game} />
         </Switch>
