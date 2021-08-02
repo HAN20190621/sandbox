@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* .square {
@@ -174,12 +174,28 @@ body {
   align-items: center;
 }
 
+.board-container {
+  display: inline-block;
+  position: relative;
+  /* height: 180px;
+  width: 165px; */
+}
+
 .board {
-  /* width: inherit;
-  height: inherit; */
-  margin: 0px;
+  position: absolute;
   border: 1px solid purple;
   align-items: center;
+  width: inherit;
+  height: inherit;
+  /* no-repeat 0px 0px / 100px 100px; */
+}
+
+.board.stack-top {
+  z-index: 9;
+  opacity: 0.8;
+  /* margin: 20px; */
+  background-color: blue;
+  opacity: 0.8;
   background: linear-gradient(
     to bottom right,
     transparent calc(50% - 2px),
@@ -187,21 +203,14 @@ body {
     red calc(50% + 1px),
     transparent calc(50% + 2px)
   );
-  /* no-repeat 0px 0px / 100px 100px; */
 }
+
+/* use inline block to have div automatically fit content */
 
 .board-row::after {
   clear: both;
-  content: '';
+  content: "";
   display: table;
-}
-
-.hannah {
-  /* display: block;
-  width: 100px;
-  height: 100px;
-  border: 1px solid;
-  margin: 10px; */
 }
 
 .status {
@@ -210,14 +219,26 @@ body {
 
 .square {
   background: #fff;
+  border: 1px solid #999;
   float: left;
   font-size: 24px;
+  font-weight: bold;
   line-height: 34px;
   height: 34px;
-  margin: 10px;
-  padding: 0;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 0px;
   text-align: center;
   width: 34px;
+} /* padding 0px */
+
+.square:focus {
+  outline: none;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
 }
 
 .sh {
@@ -226,6 +247,13 @@ body {
   background-color: green;
   border-width: 10px;
   border-color: red;
+  margin-top: 10px;
+}
+
+.sh-lastrow {
+  margin-bottom: 10px;
+  border-color: red;
+  background-color: green;
 }
 
 .sv0 {
@@ -248,8 +276,8 @@ body {
   border-color: red;
 }
 
-.line {
+/* .line {
   width: 135px;
   height: 10px;
   background-color: rgba(89, 133, 91, 0.511);
-}
+} */

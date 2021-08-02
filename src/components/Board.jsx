@@ -40,6 +40,9 @@ const Board = ({
                 style={jumpToInd ? normalStyle : setWinStyle(idx_)}
                 value={squares[idx_]}
                 idx={idx_}
+                className={
+                  "square" + ([6, 7, 8].includes(idx_) ? " sh-lastrow" : "")
+                }
                 onClick={() => {
                   onClick(idx_);
                 }}

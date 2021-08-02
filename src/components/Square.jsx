@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 // https://react.school/ui/button
 
-const Square = ({ idx, value, style, onClick }) => (
+const Square = ({ idx, value, style, onClick, className }) => (
   <button
-    className="square"
+    className={className}
     style={style}
     value={value}
     key={`sq${idx}`}
