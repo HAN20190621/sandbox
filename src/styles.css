@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* .square {
@@ -183,7 +183,7 @@ body {
 
 .board {
   position: absolute;
-  border: 1px solid purple;
+  /* border: 1px solid purple; */
   align-items: center;
   width: inherit;
   height: inherit;
@@ -192,16 +192,16 @@ body {
 
 .board.stack-top {
   z-index: 9;
-  opacity: 0.8;
+  opacity: 0.5;
+  pointer-events: none;
   /* margin: 20px; */
   background-color: blue;
-  opacity: 0.8;
   background: linear-gradient(
-    to bottom right,
-    transparent calc(50% - 2px),
-    red calc(50% - 1px),
-    red calc(50% + 1px),
-    transparent calc(50% + 2px)
+    to bottom left,
+    transparent calc(50% - 4px),
+    red calc(50% - 2px),
+    red calc(50% + 2px),
+    transparent calc(50% + 4px)
   );
 }
 
@@ -209,7 +209,7 @@ body {
 
 .board-row::after {
   clear: both;
-  content: "";
+  content: '';
   display: table;
 }
 
@@ -219,18 +219,18 @@ body {
 
 .square {
   background: #fff;
-  border: 1px solid #999;
+  border: 1px solid #fff;
   float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
   height: 34px;
+  width: 34px;
   margin-right: 10px;
   margin-left: 10px;
   margin-top: 10px;
   padding: 0px;
   text-align: center;
-  width: 34px;
 } /* padding 0px */
 
 .square:focus {
@@ -246,15 +246,15 @@ body {
   width: 162px;
   background-color: green;
   border-width: 10px;
-  border-color: red;
+  /* border-color: red; */
   margin-top: 10px;
 }
 
-.sh-lastrow {
+/* .sh-lastrow {
   margin-bottom: 10px;
   border-color: red;
   background-color: green;
-}
+} */
 
 .sv0 {
   height: 55px;
