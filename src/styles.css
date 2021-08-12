@@ -197,13 +197,15 @@ body {
   /* margin: 20px; */
   background-color: blue;
   background: linear-gradient(
-    to bottom left,
-    transparent calc(50% - 4px),
-    red calc(50% - 2px),
-    red calc(50% + 2px),
-    transparent calc(50% + 4px)
+    to top,
+    transparent calc(53.5% - 4px),
+    red calc(53.5% - 2px),
+    red calc(53.5% + 2px),
+    transparent calc(53.5% + 4px)
   );
 }
+/*16.5*/
+/*53.5*/
 
 /* use inline block to have div automatically fit content */
 
@@ -250,7 +252,7 @@ body {
   margin-top: 10px;
 }
 
-/* .sh-lastrow {
+/* .sh-lastRow {
   margin-bottom: 10px;
   border-color: red;
   background-color: green;
