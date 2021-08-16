@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* .square {
@@ -177,6 +177,7 @@ body {
 .board-container {
   display: inline-block;
   position: relative;
+  background-color: red;
   /* height: 180px;
   width: 165px; */
 }
@@ -197,21 +198,19 @@ body {
   /* margin: 20px; */
   background-color: blue;
   background: linear-gradient(
-    to top,
-    transparent calc(53.5% - 4px),
-    red calc(53.5% - 2px),
-    red calc(53.5% + 2px),
-    transparent calc(53.5% + 4px)
+    to bottom left,
+    transparent calc(50% - 4px),
+    red calc(50% - 2px),
+    red calc(50% + 2px),
+    transparent calc(50% + 4px)
   );
 }
-/*16.5*/
-/*53.5*/
 
 /* use inline block to have div automatically fit content */
 
 .board-row::after {
   clear: both;
-  content: '';
+  content: "";
   display: table;
 }
 
@@ -252,7 +251,7 @@ body {
   margin-top: 10px;
 }
 
-/* .sh-lastRow {
+/* .sh-lastrow {
   margin-bottom: 10px;
   border-color: red;
   background-color: green;

@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState, useReducer } from 'react';
+import { useCallback, useEffect, useState, useReducer } from "react";
 // import _ from "lodash"; // included in Create-React-App by default and imported as underscore
-import Board from './Board';
-import ToggleButton from './ToggleButton';
-import Button from './Button';
-import gameReducer from '../reducers/gameReducer';
+import Board from "./Board";
+import ToggleButton from "./ToggleButton";
+import Button from "./Button";
+import gameReducer from "../reducers/gameReducer";
 
 // who starts first
 // 1 - X  2 - O
 const initialiseFirstPlayer = () => {
   const idx = Math.floor(Math.random() * 2);
-  return ['X', 'O'][idx];
+  return ["X", "O"][idx];
 };
 
 const initialiseWinners = () => {
-  return { xo: '', winners: [], score: 0 };
+  return { xo: "", winners: [], score: 0 };
 };
 
 const initialiseGame = (players) => {
@@ -26,7 +26,7 @@ const initialiseGame = (players) => {
     players: players,
     currentPlayer: currentPlayer,
     firstPlayer: firstPlayer,
-    winners: initialiseWinners(),
+    winners: initialiseWinners()
   };
 };
 
@@ -34,9 +34,9 @@ export default function Game(props) {
   const [history, setHistory] = useState({
     history: [
       {
-        squares: Array(9).fill(null),
-      },
-    ],
+        squares: Array(9).fill(null)
+      }
+    ]
   });
 
   const [game, dispatch] = useReducer(
@@ -49,14 +49,14 @@ export default function Game(props) {
   const [moves, setMoves] = useState([]);
   const [sortAsc, setSortAsc] = useState(true);
   const [jumpToInd, setJumpToInd] = useState(false);
-  const [status, setStatus] = useState(''); //game status
+  const [status, setStatus] = useState(""); //game status
   // const [lineStyle, setLineStyle] = useState({});
   //const [target, setTarget] = useState(null);
-  const [BoardCoordinates, setBoardCoordinates] = useState({});
+  const [boardCoord, setBoardCoord] = useState({});
 
   const boardRef = useCallback((ref) => {
-    setBoardCoordinates(ref?.getBoundingClientRect());
-    console.log(ref.getBoundingClientRect());
+    setBoardCoord(ref?.getBoundingClientRect());
+    //console.log(ref.getBoundingClientRect());
   }, []);
 
   // // strike the winner symbols
@@ -233,7 +233,7 @@ export default function Game(props) {
       [2, 4, 6],
       [2, 5, 8],
       [3, 4, 5],
-      [6, 7, 8],
+      [6, 7, 8]
     ];
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
@@ -244,16 +244,14 @@ export default function Game(props) {
       ) {
         // get the last click item and calc the offset
         dispatch({
-          type: 'update winners',
-          payload: { xo: squares[a], winners: [a, b, c] },
+          type: "update winners",
+          payload: { xo: squares[a], winners: [a, b, c] }
         });
       }
     }
   }, [history, stepNumber]);
 
   function handleClick(item) {
-    console.log(item);
-
     const copyHistory = history.history.slice(0, stepNumber + 1); // advance
     const current = copyHistory[copyHistory.length - 1];
     const squares = current.squares.slice(); // copy
@@ -261,26 +259,26 @@ export default function Game(props) {
     if (game.winners.winners.length === 3 || squares[item]) return; // check if item exists // calculate winner????
     //
     squares[item] = isNext
-      ? game.firstPlayer === 'X'
-        ? 'X'
-        : 'O'
-      : game.firstPlayer === 'X'
-      ? 'O'
-      : 'X';
+      ? game.firstPlayer === "X"
+        ? "X"
+        : "O"
+      : game.firstPlayer === "X"
+      ? "O"
+      : "X";
     //console.log(squares);
     setHistory((prev) => ({
       ...prev,
-      history: copyHistory.concat([{ squares }]),
+      history: copyHistory.concat([{ squares }])
     }));
     setSelItems(selItems.slice(0, stepNumber).concat(item));
     setStepNumber(copyHistory.length);
     setIsNext(!isNext);
     // get current player
     dispatch({
-      type: 'update current player',
+      type: "update current player",
       payload: {
-        xo: squares[item],
-      },
+        xo: squares[item]
+      }
     });
     if (jumpToInd) setJumpToInd(false);
   }
@@ -288,15 +286,15 @@ export default function Game(props) {
   const doSetMoves = useCallback(() => {
     const newMoves = history.history.map((hist, move) => {
       const row = [0, 1, 2].includes(selItems[move - 1])
-        ? '0'
+        ? "0"
         : [3, 4, 5].includes(selItems[move - 1])
-        ? '1'
+        ? "1"
         : [6, 7, 8].includes(selItems[move - 1])
-        ? '2'
-        : '';
+        ? "2"
+        : "";
       const desc = move
         ? `Go to move ${move} (${selItems[move - 1] % 3}, ${row})`
-        : 'Go to game start';
+        : "Go to game start";
       return (
         <li key={move}>
           <button
@@ -318,8 +316,8 @@ export default function Game(props) {
     if (jumpToInd) {
       if (selItems.length !== stepNumber) {
         dispatch({
-          type: 'reset winners',
-          payload: { jumpToInd: jumpToInd },
+          type: "reset winners",
+          payload: { jumpToInd: jumpToInd }
         });
       }
     }
@@ -335,22 +333,22 @@ export default function Game(props) {
     const player = players[tempIdx];
     let tempStatus;
     if (winners.winners && winners.winners.length > 0) {
-      tempStatus = `Winner: ${player.xo}${player.name !== '' ? '-' : ''}${
+      tempStatus = `Winner: ${player.xo}${player.name !== "" ? "-" : ""}${
         player.name
       }`;
     } else if (
       currentGame.squares.filter((item) => item == null).length === 0
     ) {
-      tempStatus = 'No winner - draw!';
+      tempStatus = "No winner - draw!";
     } else {
       xo = isNext
-        ? firstPlayer === 'X'
-          ? 'X'
-          : 'O'
-        : firstPlayer === 'X'
-        ? 'O'
-        : 'X';
-      tempStatus = `Next player: ${xo}${player.name !== '' ? '-' : ''}${
+        ? firstPlayer === "X"
+          ? "X"
+          : "O"
+        : firstPlayer === "X"
+        ? "O"
+        : "X";
+      tempStatus = `Next player: ${xo}${player.name !== "" ? "-" : ""}${
         player.name
       }`;
     }
@@ -368,17 +366,17 @@ export default function Game(props) {
   // set the width and height of the board-container
   // useEffect(() => {
   //   if (boardRef === null) return;
-  //   const coordinates = boardRef.current.getBoundingClientRect();
-  //   setBoardCoordinates({ width: coordinates.width, height: coordinates.height });
+  //   const coord = boardRef.current.getBoundingClientRect();
+  //   setBoardDim({ width: coord.width, height: coord.height });
   // }, [boardRef]);
 
   function handleRestart() {
     setHistory({
       history: [
         {
-          squares: Array(9).fill(null),
-        },
-      ],
+          squares: Array(9).fill(null)
+        }
+      ]
     });
     setSelItems([]);
     setStepNumber(0);
@@ -386,7 +384,7 @@ export default function Game(props) {
     setMoves([]);
     setSortAsc(true);
     // reset game - players
-    dispatch({ type: 'request to start' });
+    dispatch({ type: "request to start" });
   }
 
   function jumpTo(step) {
@@ -400,7 +398,7 @@ export default function Game(props) {
 
   function getScore() {
     const { players } = game;
-    let temp = '';
+    let temp = "";
     players.forEach((item, index) => {
       temp += `${item.name}-${item.score.toString()} `;
       //console.log(item.score);
@@ -436,8 +434,8 @@ export default function Game(props) {
         <div
           className="board-container"
           style={{
-            width: BoardCoordinates.width + 'px',
-            height: BoardCoordinates.height + 'px',
+            width: boardCoord.width + "px",
+            height: boardCoord.height + "px"
           }}
         >
           <div ref={boardRef} className="board">
@@ -454,15 +452,15 @@ export default function Game(props) {
           <div
             className="board stack-top"
             style={{
-              width: BoardCoordinates.width + 'px',
-              height: BoardCoordinates.height + 'px',
+              width: boardCoord.width + "px",
+              height: boardCoord.height + "px"
             }}
           />
         </div>
         <div className="game-info">
           <ToggleButton
             toggle={handleSort}
-            labels={['Desc', 'Asc']}
+            labels={["Desc", "Asc"]}
             changeOpacity={false}
           />
           <ol reversed={!sortAsc}>
@@ -479,35 +477,35 @@ const initialisePlayers = () => {
   const players = [
     {
       rank: 1,
-      name: '',
-      colour: '',
-      xo: '',
-      status: '',
-      score: 0,
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
     },
     {
       rank: 2,
-      name: '',
-      colour: '',
-      xo: '',
-      status: '',
-      score: 0,
-    },
+      name: "",
+      colour: "",
+      xo: "",
+      status: "",
+      score: 0
+    }
   ];
   const xoId = Math.floor(Math.random() * 2); // where 1 - X  2 - O
-  const xo = ['X', 'O'][xoId];
+  const xo = ["X", "O"][xoId];
   players[xoId].xo = xo;
-  players[xoId === 0 ? 1 : 0].xo = xo === 'X' ? 'O' : 'X';
+  players[xoId === 0 ? 1 : 0].xo = xo === "X" ? "O" : "X";
   return players;
 };
 
 Game.defaultProps = {
   players: initialisePlayers(),
   squares: Array(9).fill(null),
-  winners: ['x'],
+  winners: ["x"],
   selItems: [0, 12, 3, 4],
   jumpToInd: true,
-  onClick: () => {},
+  onClick: () => {}
 };
 
 //https://css-tricks.com/getting-to-know-the-usereducer-react-hook/
