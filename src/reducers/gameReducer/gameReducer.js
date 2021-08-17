@@ -2,7 +2,8 @@
 // score is incrementing by 2 instead of 1
 //The reason that your quantity is being incremented twice is
 //because you would be using React.StrictMode which
-//invokes your reducer twice.
+//invokes your reducer twice which
+//cause the count to increment twice
 export default function gameReducer(state, action) {
   //console.log(action.type);
   let xo,

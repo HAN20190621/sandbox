@@ -110,7 +110,9 @@ const App = () => {
           />
           <Route
             path="/game"
-            render={(props) => <Game {...props} players={players} />}
+            render={(props) => (
+              <Game {...props} players={players} resizing={resizing} />
+            )}
           />
         </Switch>
         <Footer />
