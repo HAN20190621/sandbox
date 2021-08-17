@@ -1,18 +1,35 @@
-import React from "react";
-import PropTypes from "prop-types";
 // https://react.school/ui/button
+import PropTypes from "prop-types";
+import { useEffect, useCallback, useState } from "react";
 
-const Square = ({ idx, value, style, onClick, className }) => (
-  <button
-    className={className}
-    style={style}
-    value={value}
-    key={`sq${idx}`}
-    onClick={onClick}
-  >
-    {value}
-  </button>
-);
+const Square = ({ idx, value, style, onClick, className, winPos }) => {
+  const [itemCoord, setItemCoord] = useState({});
+
+  const itemRef = useCallback((ref) => {
+    //console.log(ref.getBoundingClientRect());
+    setItemCoord(ref?.getBoundingClientRect());
+  }, []);
+
+  useEffect(() => {
+    console.log(itemCoord);
+  }, [itemCoord]);
+
+  return (
+    <>
+      <button
+        ref={itemRef}
+        className={className}
+        style={style}
+        value={value}
+        key={`sq${idx}`}
+        onClick={onClick}
+      >
+        {value}
+      </button>
+      {/* {showLine() && <div className="line" style={lineStyle} />} */}
+    </>
+  );
+};
 
 Square.propTypes = {
   idx: PropTypes.number,
