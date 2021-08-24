@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Button = styled.button`
   background-color: black;
-  color: ${(props) => (props.sortAsc ? "white" : "grey")};
+  color: ${(props) => (props.sortAsc ? 'white' : 'grey')};
   opacity: ${(props) => (props.sortAsc ? 1 : 0.7)};
   font-size: 20px;
   padding: 10px 60px;
@@ -26,11 +27,15 @@ function ToggleButton(props) {
   return (
     <div className="button-toggle">
       <Button sortAsc={sortAsc} onClick={() => toggleButton()}>
-        {sortAsc ? "DESC" : "ASC"}
+        {sortAsc ? 'DESC' : 'ASC'}
       </Button>
     </div>
   );
 }
+
+ToggleButton.propTypes = {
+  toggle: PropTypes.func,
+};
 
 export default ToggleButton;
 

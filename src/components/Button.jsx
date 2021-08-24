@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = ({ text, colour, onClick, className }) => {
   return (
@@ -14,11 +15,18 @@ const Button = ({ text, colour, onClick, className }) => {
   );
 };
 
+Button.propTypes = {
+  text: PropTypes.string,
+  colour: PropTypes.string,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+};
+
 Button.defaultProps = {
-  text: "",
-  color: "green",
+  text: '',
+  color: 'green',
   onClick: () => {},
-  className: "btn"
+  className: 'btn',
 };
 
 export default Button;

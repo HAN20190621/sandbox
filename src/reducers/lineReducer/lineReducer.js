@@ -1,19 +1,40 @@
-//https://rangle.github.io/react-training/redux-action-reducer/
-import LineType from "./constants/LineType";
+import { getLineStyle } from '../lineReducer/constants'
 
 export default function lineReducer(state, action) {
+  const { winners, rect } = action.payload;
+  console.log(winners);
   switch (action.type) {
-    case "update horizontal line":
-      console.log(LineType.HORIZONTAL.H0);
-      break;
-    case "update vertical line":
-      break;
-    case "update diagonal line":
-      break;
+    case 'recalculate style':
+      let lineType = getLineStyle(winners, rect);
+      let newStyle = { ...state, style: lineType }
+      console.log('newStyle');
+      console.log(newStyle);
+      return newStyle;
     default:
-      break;
+      return state;
   }
 }
+
+//https://rangle.github.io/react-training/redux-action-reducer/
+// horizontal = adjust left
+// if index = 0 then adjust top -
+// if index = 1 then do nothing
+// if index = 3 then adjust top +
+// rotate 0 degree
+
+// vertical = adjust left
+// if index = 0 then adjust top -
+// if index = 1 then do nothing
+// if index = 3 then adjust top +
+// rotate 90 degree
+
+// diagonal = adjust left
+// if index = 0 then adjust top -
+// if index = 1 then do nothing
+// if index = 3 then adjust top +
+// rotate 45 degree
+//
+// https://stackoverflow.com/questions/60881446/receive-dimensions-of-element-via-getboundingclientrect-in-react
 
 // useEffect(() => {
 //   const winners = game.winners;

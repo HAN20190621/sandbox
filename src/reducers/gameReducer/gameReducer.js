@@ -15,7 +15,7 @@ export default function gameReducer(state, action) {
     newState,
     score;
   switch (action.type) {
-    case "update current player":
+    case "update current player": {
       xo = action.payload.xo;
       players = state.players;
       tempIdx = ((xo) => players.findIndex((player) => player.xo === xo))(xo);
@@ -23,7 +23,8 @@ export default function gameReducer(state, action) {
         ...state,
         currentPlayer: players[tempIdx]
       };
-    case "request to start":
+    }
+    case "request to start": {
       players = state.players;
       tempIdx = Math.floor(Math.random() * 2);
       const first = players[tempIdx].xo;
@@ -37,7 +38,8 @@ export default function gameReducer(state, action) {
           score: 0
         }
       };
-    case "update winners":
+    }
+    case "update winners": {
       xo = action.payload.xo;
       winners = action.payload.winners;
       currentPlayer = state.currentPlayer;
@@ -63,7 +65,8 @@ export default function gameReducer(state, action) {
         firstPlayer: firstPlayer
       };
       return newState;
-    case "reset winners":
+    }
+    case "reset winners": {
       const { jumpToInd } = action.payload;
       winners = state.winners; //({ winners }) = state;
       currentPlayer = state.currentPlayer;
@@ -95,6 +98,7 @@ export default function gameReducer(state, action) {
       } else {
         return { ...state };
       }
+    }
     default:
       throw new Error(); //do nothing;
   }

@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Colours from "./Colours";
-import { FaTimes } from "react-icons/fa";
+import React, { useState, useEffect, useCallback } from 'react';
+import Colours from './Colours';
+import PropTypes from 'prop-types';
+import { FaTimes } from 'react-icons/fa';
 
 export default function EditPlayer({ player, showModal, onChange, coords }) {
-  const [item, setItem] = useState({ rank: 0, name: "", colour: "" });
+  const [item, setItem] = useState({ rank: 0, name: '', colour: '' });
   const [show, setShow] = useState(true);
   const [init, setInit] = useState(false);
 
   // initialise
   useEffect(() => {
     if (player === null || player === undefined) {
-      setItem({ rank: 0, name: "", colour: "" });
+      setItem({ rank: 0, name: '', colour: '' });
     } else setItem(player);
     setInit(true);
   }, [init, player]);
@@ -26,7 +27,7 @@ export default function EditPlayer({ player, showModal, onChange, coords }) {
   }
 
   function handleSetColour(newColour) {
-    if (newColour === "") return;
+    if (newColour === '') return;
     // update player details
     const newItem = { ...item, colour: newColour, isDirty: true };
     setItem(newItem);
@@ -36,7 +37,7 @@ export default function EditPlayer({ player, showModal, onChange, coords }) {
   }
 
   function handleCloseForm(event) {
-    // event.preventDefault();
+    event.preventDefault();
     setShow(false);
     showModal(false, item, null);
   }
@@ -53,10 +54,10 @@ export default function EditPlayer({ player, showModal, onChange, coords }) {
 
   useEffect(() => {
     if (show) {
-      document.addEventListener("keydown", handleEscape, false);
+      document.addEventListener('keydown', handleEscape, false);
     }
     return () => {
-      document.removeEventListener("keydown", handleEscape, false);
+      document.removeEventListener('keydown', handleEscape, false);
     };
   }, [handleEscape, show]);
 
@@ -67,15 +68,15 @@ export default function EditPlayer({ player, showModal, onChange, coords }) {
           <FaTimes
             id="close"
             style={{
-              marginRight: "20px",
-              marginTop: "20px",
-              color: "white",
-              border: "none",
-              backgroundColor: "#c53257",
-              borderRadius: "100%",
-              width: "20px",
-              height: "20px",
-              cursor: "pointer"
+              marginRight: '20px',
+              marginTop: '20px',
+              color: 'white',
+              border: 'none',
+              backgroundColor: '#c53257',
+              borderRadius: '100%',
+              width: '20px',
+              height: '20px',
+              cursor: 'pointer',
             }}
             onClick={handleCloseForm}
           />
@@ -100,11 +101,18 @@ export default function EditPlayer({ player, showModal, onChange, coords }) {
   );
 }
 
+EditPlayer.propTypes = {
+  player: PropTypes.object,
+  showModal: PropTypes.func,
+  onChange: PropTypes.func,
+  coords: PropTypes.object,
+};
+
 const styles = {
   modal: {
-    position: "fixed",
-    zIndex: 1000
-  }
+    position: 'fixed',
+    zIndex: 1000,
+  },
   //width: 200,
   // transform: "translate(-100px, -100%)"
 };

@@ -1,18 +1,21 @@
 // https://react.school/ui/button
-import PropTypes from "prop-types";
-import { useEffect, useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-const Square = ({ idx, value, style, onClick, className, winPos }) => {
-  const [itemCoord, setItemCoord] = useState({});
+const Square = ({ idx, value, style, onClick, className, setPositions }) => {
+  const [itemPos, setItemPos] = useState();
 
   const itemRef = useCallback((ref) => {
-    //console.log(ref.getBoundingClientRect());
-    setItemCoord(ref?.getBoundingClientRect());
+    setItemPos(ref?.getBoundingClientRect());
   }, []);
 
   useEffect(() => {
-    console.log(itemCoord);
-  }, [itemCoord]);
+    if (itemPos === undefined) return;
+    if ([0, 1, 2, 3, 6].includes(idx))
+      setPositions((prev) => {
+        return { ...prev, ['item' + idx]: itemPos };
+      });
+  }, [itemPos]);
 
   return (
     <>
@@ -33,16 +36,18 @@ const Square = ({ idx, value, style, onClick, className, winPos }) => {
 
 Square.propTypes = {
   idx: PropTypes.number,
-  style: PropTypes.object,
   value: PropTypes.string,
-  onClick: PropTypes.func
+  style: PropTypes.object,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+  setPositions: PropTypes.func,
 };
 
 Square.defaultProps = {
   idx: 0,
-  style: { color: "red" },
-  value: "x",
-  onClick: () => {}
+  style: { color: 'red' },
+  value: 'x',
+  onClick: () => {},
 };
 
 export default Square;

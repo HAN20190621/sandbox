@@ -1,5 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 const Player = (props) => {
   const [player, setPlayer] = useState({ ...props.player });
@@ -39,7 +40,7 @@ const Player = (props) => {
                 height: '20px',
                 cursor: 'pointer',
               }}
-              onClick={(event) => {
+              onClick={() => {
                 const newPlayer = { ...player };
                 newPlayer.name = '';
                 newPlayer.colour = '';
@@ -61,6 +62,13 @@ const Player = (props) => {
       </div>
     </>
   );
+};
+
+Player.propTypes = {
+  player: PropTypes.object,
+  showModal: PropTypes.func,
+  handleUpdatePlayerCoords: PropTypes.func,
+  clearName: PropTypes.func,
 };
 
 Player.defaultProps = {
