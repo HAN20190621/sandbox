@@ -1,15 +1,13 @@
-import { getLineStyle } from '../lineReducer/constants'
+import { getLineStyle } from "../lineReducer/constants";
 
 export default function lineReducer(state, action) {
   const { winners, rect } = action.payload;
-  console.log(winners);
   switch (action.type) {
-    case 'recalculate style':
+    case "recalculate style":
       let lineType = getLineStyle(winners, rect);
-      let newStyle = { ...state, style: lineType }
-      console.log('newStyle');
-      console.log(newStyle);
+      let newStyle = { ...state, style: lineType };
       return newStyle;
+    //return state;
     default:
       return state;
   }

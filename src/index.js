@@ -2,8 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 
-//import App from "./components/Line";
-import App from "./App";
+// import App from "./components/Line";
+// import App from "./App";
+import App from "./components/Board";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(

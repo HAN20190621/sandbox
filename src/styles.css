@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* .square {
@@ -210,7 +210,7 @@ body {
 
 .board-row::after {
   clear: both;
-  content: '';
+  content: "";
   display: table;
 }
 
@@ -219,7 +219,8 @@ body {
 }
 
 .square {
-  background: #fff;
+  /* background: #fff; */
+  background: red;
   border: 1px solid #fff;
   float: left;
   font-size: 24px;
@@ -251,11 +252,11 @@ body {
   margin-top: 10px;
 }
 
-/* .sh-lastRow {
+.sh-lastRow {
   margin-bottom: 10px;
   border-color: red;
   background-color: green;
-} */
+}
 
 .sv0 {
   height: 55px;
