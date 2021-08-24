@@ -3,11 +3,12 @@ import { getLineStyle } from "../lineReducer/constants";
 export default function lineReducer(state, action) {
   const { winners, rect } = action.payload;
   switch (action.type) {
-    case "recalculate style":
+    case "recalculate style": {
+      if (rect[Object.keys(rect)[0]] === undefined) return state;
       let lineType = getLineStyle(winners, rect);
       let newStyle = { ...state, style: lineType };
       return newStyle;
-    //return state;
+    }
     default:
       return state;
   }

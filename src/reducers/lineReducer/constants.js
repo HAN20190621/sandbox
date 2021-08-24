@@ -46,24 +46,17 @@ export function getLineStyle(items, rect) {
   };
   let lineType = getLineType(items);
   let pos;
-  //console.log(lineType);
   switch (lineType) {
-    case "H0":
-      console.log("xxx");
-      console.log(rect.item0);
-      pos = rect.map((item, idx) => {
-        return idx === 0;
-      });
-      //pos = rect.item0; //Object.assign({}, rect.item0);
-      //console.log(pos);
+    case "H0": {
+      pos = rect['item0']; //Object.assign({}, rect.item0);
       //console.log(pos.left);
-      return pos;
-    // return {
-    //   ...newStyle,
-    //   left: pos.left,
-    //   top: pos.top + pos.height * 0.16,
-    //   width: 100 //rect.width
-    // };
+      return {
+        ...newStyle,
+        left: pos.left,
+        top: pos.top + pos.height * 0.16,
+        width: 100 //rect.width
+      };
+    }
     case "H1":
       pos = rect["item3"];
       return {

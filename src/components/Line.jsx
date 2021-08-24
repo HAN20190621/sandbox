@@ -1,29 +1,30 @@
-import { useReducer, useEffect } from "react";
-import lineReducer from "../reducers/lineReducer/lineReducer";
-
+import React, { useReducer, useEffect, useCallback } from 'react';
+import lineReducer from '../reducers/lineReducer/lineReducer';
+import PropTypes from 'prop-types';
 const NONE = {};
 const initialiseState = { style: NONE };
 
 // this component draws a line on the winner (squares)
-export default function Line({ winners, positions, colour }) {
+export default function Line({ winners, positions }) {
   const [line, dispatch] = useReducer(lineReducer, initialiseState);
 
-  useEffect(() => {
-    if (positions === undefined) return;
-    // get the last click item and calc the offset
-    //console.log(positions);
+  const setLine = useCallback(() => {
     dispatch({
-      type: "recalculate style",
-      payload: { winners: winners, rect: positions }
+      type: 'recalculate style',
+      payload: { winners: winners, rect: positions },
     });
   }, [winners, positions]);
+
+  useEffect(() => {
+    setLine();
+  }, [setLine]);
 
   return (
     <>
       <button
         onClick={() => {
           dispatch({
-            type: "recalculate style",
+            type: 'recalculate style',
             payload: {
               winners: [2, 4, 6],
               rect: {
@@ -31,10 +32,10 @@ export default function Line({ winners, positions, colour }) {
                   width: 100,
                   height: 5,
                   top: 100,
-                  left: 5
-                }
-              }
-            }
+                  left: 5,
+                },
+              },
+            },
           });
         }}
       >
@@ -45,15 +46,21 @@ export default function Line({ winners, positions, colour }) {
   );
 }
 
+Line.propTypes = {
+  winners: PropTypes.array,
+  positions: PropTypes.object,
+  //colour: PropTypes.string,
+};
+
 Line.defaultProps = {
   positions: {
     item0: {
       width: 100,
       height: 5,
       top: 100,
-      left: 5
-    }
+      left: 5,
+    },
   },
-  colour: "red",
-  winners: [8, 4, 0]
+  colour: 'red',
+  winners: [8, 4, 0],
 };
