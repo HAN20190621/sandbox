@@ -1,6 +1,6 @@
-import React, { useReducer, useEffect, useCallback } from 'react';
-import lineReducer from '../reducers/lineReducer/lineReducer';
-import PropTypes from 'prop-types';
+import React, { useReducer, useEffect, useCallback } from "react";
+import lineReducer from "../reducers/lineReducer/lineReducer";
+import PropTypes from "prop-types";
 const NONE = {};
 const initialiseState = { style: NONE };
 
@@ -10,8 +10,8 @@ export default function Line({ winners, positions }) {
 
   const setLine = useCallback(() => {
     dispatch({
-      type: 'recalculate style',
-      payload: { winners: winners, rect: positions },
+      type: "recalculate style",
+      payload: { winners: winners, rect: positions }
     });
   }, [winners, positions]);
 
@@ -24,7 +24,7 @@ export default function Line({ winners, positions }) {
       <button
         onClick={() => {
           dispatch({
-            type: 'recalculate style',
+            type: "recalculate style",
             payload: {
               winners: [2, 4, 6],
               rect: {
@@ -32,10 +32,10 @@ export default function Line({ winners, positions }) {
                   width: 100,
                   height: 5,
                   top: 100,
-                  left: 5,
-                },
-              },
-            },
+                  left: 5
+                }
+              }
+            }
           });
         }}
       >
@@ -48,7 +48,7 @@ export default function Line({ winners, positions }) {
 
 Line.propTypes = {
   winners: PropTypes.array,
-  positions: PropTypes.object,
+  positions: PropTypes.object
   //colour: PropTypes.string,
 };
 
@@ -58,9 +58,9 @@ Line.defaultProps = {
       width: 100,
       height: 5,
       top: 100,
-      left: 5,
-    },
+      left: 5
+    }
   },
-  colour: 'red',
-  winners: [8, 4, 0],
+  colour: "red",
+  winners: [8, 4, 0]
 };

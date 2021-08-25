@@ -45,80 +45,95 @@ export function getLineStyle(items, rect) {
     height: 5
   };
   let lineType = getLineType(items);
-  let pos;
+  let startPos;
+  let endPos;
   switch (lineType) {
     case "H0": {
-      pos = rect['item0']; //Object.assign({}, rect.item0);
-      //console.log(pos.left);
+      startPos = rect["item0"]; //Object.assign({}, rect.item0);
+      endPos = rect["item2"];
+      // console.log(startPos);
+      // console.log(endPos);
+      console.log(rect["item0"]);
+      console.log(rect["item1"]);
+      console.log(rect["item2"]);
       return {
         ...newStyle,
-        left: pos.left,
-        top: pos.top + pos.height * 0.16,
-        width: 100 //rect.width
+        left: startPos.left,
+        top: startPos.top + startPos.height / 2,
+        width: endPos.left + endPos.width - startPos.left
       };
     }
-    case "H1":
-      pos = rect["item3"];
+    case "H1": {
+      startPos = rect["item3"];
+      endPos = rect["item5"];
+      // console.log(endPos);
+      console.log(rect["item2"]);
+      console.log(rect["item5"]);
+      //console.log(endPos.left + endPos.width - startPos.left);
       return {
         ...newStyle,
-        left: pos.left,
-        top: pos.top + pos.height * 0.5,
-        width: 100 //rect.width
+        left: startPos.left,
+        top: startPos.top + startPos.height / 2,
+        width: endPos.left + endPos.width - startPos.left
       };
+    }
     case "H2":
-      pos = rect["item6"];
+      startPos = rect["item6"];
+      endPos = rect["item8"];
       return {
         ...newStyle,
-        left: pos.left,
-        top: pos.top + pos.height * 0.85,
-        width: 100 //rect.width
+        left: startPos.left,
+        top: startPos.top + startPos.height / 2,
+        width: endPos.left + endPos.width - startPos.left
       };
     case "V0":
-      pos = rect["item0"];
+      startPos = rect["item0"];
       return {
         ...newStyle,
-        left: pos.left + pos.width * 0.17,
-        top: pos.top,
+        left: startPos.left + startPos.width * 0.17,
+        top: startPos.top,
         width: "10px",
-        height: pos.height
+        height: startPos.height
       };
     case "V1":
-      pos = rect["item1"];
+      startPos = rect["item1"];
       return {
         ...newStyle,
-        left: pos.left + pos.width * 0.5,
-        top: pos.top,
+        left: startPos.left + startPos.width * 0.5,
+        top: startPos.top,
         width: "10px",
-        height: pos.height
+        height: startPos.height
       };
     case "V2":
-      pos = rect["item2"];
+      startPos = rect["item2"];
       return {
         ...newStyle,
-        left: pos.left + pos.width * 0.825,
-        top: pos.top,
+        left: startPos.left + startPos.width * 0.825,
+        top: startPos.top,
         width: "10px",
-        height: pos.height
+        height: startPos.height
       };
     case "D0":
-      pos = rect["item0"];
+      startPos = rect["item0"];
       return {
         ...newStyle,
-        left: pos.left,
-        top: pos.top, // rect.top + rect.height / 2,
-        height: pos.height,
-        width: Math.sqrt(pos.width * pos.width + pos.height * pos.height),
+        left: startPos.left,
+        top: startPos.top, // rect.top + rect.height / 2,
+        height: startPos.height,
+        width: Math.sqrt(
+          startPos.width * startPos.width + startPos.height * startPos.height
+        ),
         transform: "rotate(48deg)",
         transformOrigin: "top left"
       };
     case "D1":
-      pos = rect["item6"];
+      startPos = rect["item6"];
       return {
         ...newStyle,
         // left: rect.left + rect.width,
-        top: pos.top + pos.height, // rect.top + rect.height / 2,
-        width: pos.width,
-        height: pos.height,
+        top: startPos.top + startPos.height, // rect.top + rect.height / 2,
+        width: startPos.width,
+        height: startPos.height,
         //Math.sqrt(          rect.width * rect.width + rect.height * rect.height        ),
         transform: "rotate(-48deg)",
         transformOrigin: "top left"

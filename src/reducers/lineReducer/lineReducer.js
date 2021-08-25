@@ -4,10 +4,12 @@ export default function lineReducer(state, action) {
   const { winners, rect } = action.payload;
   switch (action.type) {
     case "recalculate style": {
+      // check if object is defined
       if (rect[Object.keys(rect)[0]] === undefined) return state;
+      console.log(Object.keys(rect).length);
       let lineType = getLineStyle(winners, rect);
-      let newStyle = { ...state, style: lineType };
-      return newStyle;
+      // console.log(lineType);
+      return { style: lineType };
     }
     default:
       return state;
