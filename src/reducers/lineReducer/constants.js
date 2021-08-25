@@ -53,9 +53,9 @@ export function getLineStyle(items, rect) {
       endPos = rect["item2"];
       // console.log(startPos);
       // console.log(endPos);
-      console.log(rect["item0"]);
-      console.log(rect["item1"]);
-      console.log(rect["item2"]);
+      //console.log(rect["item0"]);
+      //console.log(rect["item1"]);
+      //console.log(rect["item2"]);
       return {
         ...newStyle,
         left: startPos.left,

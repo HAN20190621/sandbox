@@ -5,18 +5,23 @@ import PropTypes from "prop-types";
 const Square = ({ idx, value, style, onClick, className, setPositions }) => {
   //const [itemPos, setItemPos] = useState();
 
-  const itemRef = useCallback((ref) => {
-    if (ref) {
-      //let item = ref?.getBoundingClientRect().toJSON();
-      //console.log(item);
-      setPositions((prev) => {
-        return {
-          ...prev,
-          ["item" + idx]: ref.getBoundingClientRect()
-        };
-      });
-    }
-  }, []);
+  const itemRef = useCallback(
+    (ref) => {
+      if (ref) {
+        //let item = ref?.getBoundingClientRect().toJSON();
+        console.log(idx);
+        setPositions((prev) => {
+          if (Object.keys(prev)["item" + idx] === undefined) {
+            return {
+              ...prev,
+              ["item" + idx]: ref.getBoundingClientRect()
+            };
+          }
+        });
+      }
+    },
+    [setPositions, idx]
+  );
 
   // useEffect(() => {
   //   setPositions((prev) => {
