@@ -1,6 +1,6 @@
 // https://react.school/ui/button
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 const Square = ({ idx, value, style, onClick, className, setPositions }) => {
   //const [itemPos, setItemPos] = useState();
@@ -8,13 +8,13 @@ const Square = ({ idx, value, style, onClick, className, setPositions }) => {
   const itemRef = useCallback(
     (ref) => {
       if (ref) {
-        //let item = ref?.getBoundingClientRect().toJSON();
-        console.log(idx);
+        let item = ref?.getBoundingClientRect().toJSON();
+        //console.log(idx);
         setPositions((prev) => {
-          if (Object.keys(prev)["item" + idx] === undefined) {
+          if (Object.keys(prev)['item' + idx] === undefined) {
             return {
               ...prev,
-              ["item" + idx]: ref.getBoundingClientRect()
+              ['item' + idx]: item,
             };
           }
         });
@@ -49,14 +49,14 @@ Square.propTypes = {
   style: PropTypes.object,
   onClick: PropTypes.func,
   className: PropTypes.string,
-  setPositions: PropTypes.func
+  setPositions: PropTypes.func,
 };
 
 Square.defaultProps = {
   idx: 0,
-  style: { color: "red" },
-  value: "x",
-  onClick: () => {}
+  style: { color: 'red' },
+  value: 'x',
+  onClick: () => {},
 };
 
 export default Square;
