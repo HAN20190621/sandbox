@@ -4,7 +4,7 @@ import "./styles.css";
 
 // import App from "./components/Line";
 // import App from "./App";
-import App from "./components/Board";
+import App from "./components/Grid";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
